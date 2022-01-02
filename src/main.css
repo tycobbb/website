@@ -1,0 +1,23 @@
+/* -- resets -- */
+body, p {
+  margin: 0;
+}
+
+/* -- globals */
+html {
+  font-family: system-ui;
+}
+
+/* -- title -- */
+.Title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.Title-text {
+  font-size: 5em;
+  font-weight: 300;
+}
