@@ -15,6 +15,11 @@ html {
   font-family: Baskerville, Hoefler Text, Georgia, serif;
 }
 
+body {
+  background: #fefef9;
+  color: #000000;
+}
+
 * {
   font-weight: inherit;
 }

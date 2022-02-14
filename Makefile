@@ -6,7 +6,7 @@ help-colw = 7
 # -- data --
 ds-src = ~/Personal/forest/www/src
 ds-root = $(ds-src)/Main.ts
-ds-build = ./build
+db-dst = ./dst
 dr-root = ./src
 
 # -- tools --
@@ -41,13 +41,12 @@ $(eval $(call alias, b, b/0))
 
 ## build the site
 b/0:
-	mkdir -p $(ds-build)
-	$(tr-deno) run $(ts-opts) $(ds-root) $(dr-root)
+	$(tr-deno) run $(ts-opts) $(ds-root) $(dr-root) --prod
 .PHONY: b/0
 
 ## clean the build
 b/clean:
-	rm -rf $(ds-build)
+	rm -rf $(db-dst)
 .PHONY:
 
 ## -- run (r) --
@@ -62,4 +61,3 @@ r/0: r/up
 r/up:
 	$(tr-deno) run $(ts-opts) $(ds-root) $(dr-root) --up --verbose
 .PHONY: r/up
-
