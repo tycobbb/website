@@ -1,4 +1,4 @@
-import "./elements/os.js"
+import "./elements/w-frame.js"
 
 // -- constants --
 /// the id of the page container

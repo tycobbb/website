@@ -1,17 +1,3 @@
-// -- template --
-/// the frame template
-const k_Template = `
-  <article class="Frame">
-    <header class="Frame-header">
-      <span class="Frame-name">
-        <%= it.name %>
-      </span>
-    </header>
-
-    <div class="Frame-body"></div>
-  </article>
-`
-
 // -- constants --
 /// frame operations
 const k_Gesture = {
@@ -21,8 +7,10 @@ const k_Gesture = {
 
 /// frame classes
 const k_Class = {
-  Body: "Frame-body",
+  Frame: "Frame",
   Header: "Frame-header",
+  Name: "Frame-name",
+  Body: "Frame-body",
   State: {
     IsDragging: "is-dragging",
     IsScaling: "is-scaling",
@@ -35,25 +23,44 @@ const k_MinSize = {
   h: 40,
 }
 
+// -- helpers --
+function addChild($el, tag, klass) {
+  const $child = document.createElement(tag)
+  $el.appendChild($child)
+  setClass($child, klass)
+  return $child
+}
+
+function setClass($el, klass) {
+  $el.classList.toggle(klass, true)
+  return $el
+}
+
 // -- impls --
 export class Frame extends HTMLElement {
   // -- lifetime --
   /// create a new element
   constructor() {
+    super()
+
+    // grab this
     const m = this
 
-    // create shadow root
-    m.attachShadow({ mode: "open" })
+    // capture content
+    const $content = Array.from(m.children)
 
-    // create an element from the template
-    const $root = document.createElement("span")
-    $root.outerHTML = k_FrameTemplate
+    // build element
+    const $root = setClass(this, k_Class.Frame)
+    const $head = addChild($root, "header", k_Class.Header)
+    const $name = addChild($head, "span", k_Class.Name)
+    const $body = addChild($root, "div", k_Class.Body)
+    $body.append(...$content)
 
-    const $body = $root.querySelector(k_Class.Body)
-    $body.append(...m.children)
+    // set name
+    $name.textContent = m.getAttribute("name") || "window"
 
-    // insert the element into the shadow root
-    m.shadowRoot.append($root)
+    // bind events
+    m.initEvents()
   }
 
   /// bind events to the element
@@ -101,9 +108,9 @@ export class Frame extends HTMLElement {
 
     // apply gesture style
     switch (gesture.type) {
-      case Gesture.Move:
+      case k_Gesture.Move:
         m.classList.toggle(k_Class.State.Dragging, true); break
-      case Gesture.Scale:
+      case k_Gesture.Scale:
         m.classList.toggle(k_Class.State.Scaling, true); break
     }
 
@@ -128,7 +135,7 @@ export class Frame extends HTMLElement {
 
     // start the operation
     switch (m.gesture.type) {
-      case Gesture.Scale:
+      case k_Gesture.Scale:
         m.onScaleStart(dr)
         break
     }
@@ -148,9 +155,9 @@ export class Frame extends HTMLElement {
     const my = evt.clientY
 
     switch (this.gesture.type) {
-      case Gesture.Move:
+      case k_Gesture.Move:
         this.onDrag(mx, my); break
-      case Gesture.Scale:
+      case k_Gesture.Scale:
         this.onScale(mx, my); break
     }
   }
@@ -166,9 +173,9 @@ export class Frame extends HTMLElement {
 
     // reset gesture style
     switch (this.gesture.type) {
-      case Gesture.Move:
+      case k_Gesture.Move:
         m.classList.toggle(k_Class.State.Dragging, false); break
-      case Gesture.Scale:
+      case k_Gesture.Scale:
         m.classList.toggle(k_Class.State.Scaling, false); break
     }
 
