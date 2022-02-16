@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -7,13 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- assets -->
+    <script type="module" src="os/os.js"></script>
     <link rel="stylesheet" href="main.css">
 
     <!-- display -->
     <title>website</title>
   </head>
 
-  <body>
-    <%~ it.body %>
+  <body class="Layout">
+    <!-- the page body -->
+    <div id="page" class="Layout-content">
+      <%~ it.body %>
+    </div>
+
+    <!-- the layer of persistent elements -->
+    <div id="persistent" class="Layout-layer">
+      <%~ include("nav.f.html") %>
+    </div>
   </body>
 </html>
