@@ -68,8 +68,8 @@ export class Frame extends HTMLElement {
   /// the last time in ms
   time = 0.0
 
-  /// the time the animation is finished in ms
-  animTime = 0.0
+  /// the animation time remaining in ms
+  animRemaining = 0.0
 
   // -- p/gesture
   /// the active gesture
@@ -167,24 +167,22 @@ export class Frame extends HTMLElement {
 
     // run update
     const delta = time - m.time
-    m.update(delta, time)
+    m.update(delta)
 
     // continue loop
     m.time = time
     requestAnimationFrame(m.loop)
   }
 
-  update(delta, time) {
+  update(delta) {
     const m = this
 
-    // as long as there's animation left
-    const remaining = m.animTime - time
-    if (remaining <= 0) {
+    if (m.animRemaining <= 0) {
       return
     }
 
     // get the lerp pct
-    const pct = delta / remaining
+    const pct =  Math.min(delta, m.animRemaining) / m.animRemaining
 
     // grab rects
     const rc = m.curr
@@ -215,6 +213,9 @@ export class Frame extends HTMLElement {
       rc.h += dh * pct
       m.style.height = rc.h + "px"
     }
+
+    // update the remaining anim time
+    m.animRemaining -= delta
   }
 
   // -- events --
@@ -299,8 +300,8 @@ export class Frame extends HTMLElement {
         this.onResize(mx, my); break
     }
 
-    // update lerp time
-    m.animTime = m.time + kAnimDuration
+    // update remaining lerp time
+    m.animRemaining = kAnimDuration
   }
 
   /// when the mouse is released

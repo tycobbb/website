@@ -100,7 +100,6 @@ w-frame {
   padding: 4px;
   background-color: transparent;
   border: 1px solid black;
-  font-family: monospace;
   pointer-events: all;
 }
 
@@ -110,6 +109,7 @@ w-frame {
   justify-content: center;
   height: 19px;
   margin-bottom: 4px;
+  font-family: monospace;
   background: repeating-linear-gradient(black, black 1px, transparent 1px, transparent 2px);
   cursor: grab;
 }
@@ -252,5 +252,7 @@ w-frame {
 /* -- nav -- */
 .Nav {
   flex: 1;
+  padding: 10px;
+  font-size: 1.1rem;
   background: linear-gradient(transparent, #fefef9);
 }
