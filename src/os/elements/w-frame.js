@@ -1,6 +1,6 @@
 // -- constants --
 /// the animation duration in ms
-const k_AnimDuration = 100
+const k_AnimDuration = 150
 
 /// frame operations
 const k_Gesture = {
@@ -195,7 +195,7 @@ export class Frame extends HTMLElement {
     }
 
     const dh = rd.h - rc.h
-    if (dy !== 0) {
+    if (dh !== 0) {
       rc.h += dh * pct
       m.style.height = rc.h + "px"
     }
@@ -360,13 +360,14 @@ export class Frame extends HTMLElement {
     const s0 = m.gesture.initialSize
     const m0 = m.gesture.initialMousePos
 
-    // get the mouse delta
-    const dx = mx - m0.x
-    const dy = my - m0.y
+    // get the size deltas
+    const dw = mx - m0.x
+    const dh = my - m0.y
+    console.log(`dw ${dw} dh ${dh}`)
 
     // update destination
-    m.dest.w = Math.max(s0.w + dx, k_MinSize.w);
-    m.dest.h = Math.max(s0.h + dy, k_MinSize.h);
+    m.dest.w = Math.max(s0.w + dw, k_MinSize.w);
+    m.dest.h = Math.max(s0.h + dh, k_MinSize.h);
   }
 
   /// when the player clicks the close button
