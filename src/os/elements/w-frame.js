@@ -14,7 +14,8 @@ const k_Class = {
   Body: "Frame-body",
   Resize: "Frame-resize",
   IsDragging: "is-dragging",
-  IsScaling: "is-scaling",
+  IsResizing: "is-resizing",
+  IsReleasing: "is-releasing",
 }
 
 /// the minimum size of the frame
@@ -39,6 +40,13 @@ function setClass($el, klass) {
 // -- impls --
 export class Frame extends HTMLElement {
   // -- props --
+  /// the active gesture
+  gesture = null
+
+  /// if release is
+  release = false
+
+  // -- p/el
   /// the close button
   $close = null
 
@@ -122,13 +130,19 @@ export class Frame extends HTMLElement {
       return
     }
 
+    // if there's a release, clear it
+    if (m.release) {
+      m.onReleaseEnd()
+    }
+
     // apply gesture style
     switch (gesture.type) {
       case k_Gesture.Drag:
         m.classList.toggle(k_Class.IsDragging, true); break
       case k_Gesture.Resize:
-        m.classList.toggle(k_Class.IsScaling, true); break
+        m.classList.toggle(k_Class.IsResizing, true); break
     }
+
 
     // record initial position
     const dr = m.getBoundingClientRect()
@@ -148,6 +162,7 @@ export class Frame extends HTMLElement {
 
     // store the gesture
     m.gesture = gesture
+    m.release = null
 
     // start the operation
     switch (m.gesture.type) {
@@ -178,7 +193,7 @@ export class Frame extends HTMLElement {
     }
   }
 
-  // when the mouse is released
+  /// when the mouse is released
   onMouseUp = () => {
     const m = this
 
@@ -187,16 +202,30 @@ export class Frame extends HTMLElement {
       return
     }
 
-    // reset gesture style
-    switch (this.gesture.type) {
-      case k_Gesture.Drag:
-        m.classList.toggle(k_Class.IsDragging, false); break
-      case k_Gesture.Resize:
-        m.classList.toggle(k_Class.IsScaling, false); break
-    }
+    // start the release
+    m.release = true
+    m.addEventListener("animationend", m.onReleaseEnd)
+    m.classList.toggle(k_Class.IsReleasing, true)
 
     // clear gesture
     m.gesture = null
+  }
+
+  /// when the release finishes
+  onReleaseEnd = () => {
+    const m = this
+    if (!m.release) {
+      return
+    }
+
+    // clear the release
+    m.release = false
+    m.removeEventListener("animationend", m.onReleaseEnd)
+
+    // remove all gesture styles
+    m.classList.toggle(k_Class.IsDragging, false)
+    m.classList.toggle(k_Class.IsResizing, false)
+    m.classList.toggle(k_Class.IsReleasing, false)
   }
 
   // -- e/drag

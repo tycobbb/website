@@ -82,12 +82,12 @@ button {
   }
 }
 
-/* -- frames */
+/* -- frames -- */
 w-frame {
   display: none;
 }
 
-.Frame {
+.Frame[class] {
   box-sizing: border-box;
   position: absolute;
   display: flex;
@@ -97,50 +97,6 @@ w-frame {
   border: 1px solid black;
   font-family: monospace;
   pointer-events: all;
-  transition: transform 0.2s;
-}
-
-.Frame::before, .Frame::after {
-  content: "";
-  position: absolute;
-}
-
-.Frame::before {
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 0px;
-  background: repeating-linear-gradient(black, black 1px, transparent 1px, transparent 2px);
-  transition: left 0.2s, bottom 0.2s, height 0.2s;
-}
-
-.Frame::after {
-  top: 0;
-  right: 0;
-  width: 0px;
-  bottom: 0;
-  background: repeating-linear-gradient(transparent, transparent 1px, black 1px, black 2px);
-  transition: right 0.2s, top 0.2s, width 0.2s;
-}
-
-.Frame.is-dragging, .Frame.is-resizing {
-  cursor: grabbing;
-}
-
-.Frame.is-dragging {
-  transform: translate(-5px, -5px);
-}
-
-.Frame.is-dragging::before {
-  left: 5px;
-  bottom: -5px;
-  height: 5px;
-}
-
-.Frame.is-dragging::after {
-  right: -5px;
-  top: 5px;
-  width: 5px;
 }
 
 .Frame-header {
@@ -184,6 +140,104 @@ w-frame {
   background: repeating-linear-gradient(90deg, transparent, transparent 1px, black 1px, black 2px);
   cursor: grab;
 }
+
+/* -- f/shadow -- */
+.Frame::before, .Frame::after {
+  content: "";
+  position: absolute;
+}
+
+.Frame::before {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0px;
+  background: repeating-linear-gradient(black, black 1px, transparent 1px, transparent 2px);
+}
+
+.Frame::after {
+  top: 0;
+  right: 0;
+  width: 0px;
+  bottom: 0;
+  background: repeating-linear-gradient(transparent, transparent 1px, black 1px, black 2px);
+}
+
+/* -- f/state -- */
+.Frame.is-dragging,
+.Frame.is-resizing {
+  cursor: grabbing;
+}
+
+.Frame,
+.Frame::before,
+.Frame::after {
+  animation:
+    0.2s ease-out forwards,
+    0.6s ease-in-out 1s infinite alternate both,
+    0.2s ease-out both
+  ;
+}
+
+.Frame.is-dragging.is-releasing,
+.Frame.is-dragging.is-releasing::before,
+.Frame.is-dragging.is-releasing::after {
+  animation-play-state: paused, paused, running;
+}
+
+.Frame.is-dragging {
+  animation-name: Frame_waveEnter, Frame_wave, none;
+}
+
+.Frame.is-dragging::before {
+  animation-name: Frame-before_waveEnter, none, none;
+}
+
+.Frame.is-dragging::after {
+  animation-name: Frame-after_waveEnter, none, none;
+}
+
+.Frame.is-dragging.is-releasing {
+  animation-name: Frame_waveEnter, Frame_wave, Frame_waveExit;
+}
+
+.Frame.is-dragging.is-releasing::before {
+  animation-name: Frame-before_waveEnter, none, Frame-before_waveExit;
+}
+
+.Frame.is-dragging.is-releasing::after {
+  animation-name: Frame-after_waveEnter, none, Frame-after_waveExit;
+}
+
+/* https://stackoverflow.com/questions/27881829/firefox-css-animation-smoothing-sub-pixel-smoothing */
+@keyframes Frame_waveEnter {
+  to { transform: translate(-5px, -5px); }
+}
+
+@keyframes Frame_wave {
+  to { transform: translate(-5px, -5px) rotate(0.5deg); }
+}
+
+@keyframes Frame_waveExit {
+  to { transform: none; }
+}
+
+@keyframes Frame-before_waveEnter {
+  to { left: 5px; bottom: -5px; height: 5px; }
+}
+
+@keyframes Frame-before_waveExit {
+  to { left: 0; bottom: 0; height: 0; }
+}
+
+@keyframes Frame-after_waveEnter {
+  to { right: -5px; top: 5px; width: 5px; }
+}
+
+@keyframes Frame-after_waveExit {
+  to { right: 0; top: 0; width: 0; }
+}
+
 
 /* -- nav -- */
 .Nav {
