@@ -312,10 +312,16 @@ export class Frame extends HTMLElement {
       return
     }
 
-    // start the release
-    m.release = true
-    m.addEventListener("animationend", m.onReleaseEnd)
-    m.classList.toggle(kClass.IsReleasing, true)
+    // if not releasing, end animation
+    m.release = m.gesture.type === kGesture.Drag
+    if (!m.release) {
+      m.onAnimationEnd()
+    }
+    // otherwise, start the release
+    else {
+      m.classList.toggle(kClass.IsReleasing, true)
+      m.addEventListener("animationend", m.onReleaseEnd)
+    }
 
     // end the gesture
     switch (m.gesture.type) {
@@ -339,11 +345,18 @@ export class Frame extends HTMLElement {
     // clear the release
     m.release = false
     m.removeEventListener("animationend", m.onReleaseEnd)
+    m.onAnimationEnd()
+  }
+
+  /// when animation ends
+  onAnimationEnd() {
+    const m = this
 
     // remove all gesture styles
-    m.classList.toggle(kClass.IsDragging, false)
-    m.classList.toggle(kClass.IsResizing, false)
-    m.classList.toggle(kClass.IsReleasing, false)
+    const cx = m.classList
+    cx.toggle(kClass.IsDragging, false)
+    cx.toggle(kClass.IsResizing, false)
+    cx.toggle(kClass.IsReleasing, false)
   }
 
   // -- e/drag
@@ -403,7 +416,6 @@ export class Frame extends HTMLElement {
     // get the size deltas
     const dw = mx - m0.x
     const dh = my - m0.y
-    console.log(`dw ${dw} dh ${dh}`)
 
     // update destination
     m.dest.w = Math.max(s0.w + dw, kMinSize.w);
@@ -428,7 +440,7 @@ export class Frame extends HTMLElement {
     this.dispatchEvent(new Frame.GestureEvent(name, type))
   }
 
-  /// a gesture event
+  /// a gesture event that bubbles
   static GestureEvent = class GestureEvent extends Event {
     constructor(name, type = "any") {
       super(name, {

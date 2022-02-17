@@ -1,11 +1,16 @@
 import { Frame } from "./elements/w-frame.js"
 
 // -- constants --
-/// the id of the page container
-const kPageId = "page"
+/// a map of element ids
+const kId = {
+  Page: "page",
+  Persistent: "persistent"
+}
 
-/// the id of the persistent container
-const kPersistentId = "persistent"
+/// a map of class names
+const kClass = {
+  IsInteracting: "is-interacting"
+}
 
 // -- props --
 /// the current location
@@ -21,8 +26,8 @@ let $mPeristent = null
 function main() {
   // set props
   mUrl = document.location
-  $mPage = document.getElementById(kPageId)
-  $mPeristent = document.getElementById(kPersistentId)
+  $mPage = document.getElementById(kId.Page)
+  $mPeristent = document.getElementById(kId.Persistent)
 
   // bind events
   const d = document
@@ -166,12 +171,12 @@ function didFinishVisit() {
 
 /// when a gesture starts
 function didStartGesture() {
-  $mPeristent.style.pointerEvents = "all"
+  $mPeristent.classList.toggle(kClass.IsInteracting, true)
 }
 
 /// when a gesture ends
 function didEndGesture() {
-  $mPeristent.style.pointerEvents = "none"
+  $mPeristent.classList.toggle(kClass.IsInteracting, false)
 }
 
 // -- exports --

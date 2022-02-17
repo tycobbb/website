@@ -50,6 +50,11 @@ button {
   pointer-events: none;
 }
 
+.Layout-layer.is-interacting {
+  cursor: grabbing;
+  pointer-events: all;
+}
+
 /* -- page -- */
 .Page {
   padding: 40px;
@@ -160,7 +165,7 @@ w-frame {
   top: 0;
   right: 0;
   width: 0px;
-  bottom: 0;
+  bottom: 1px;
   background: repeating-linear-gradient(transparent, transparent 1px, black 1px, black 2px);
 }
 
@@ -168,6 +173,11 @@ w-frame {
 .Frame.is-dragging,
 .Frame.is-resizing {
   cursor: grabbing;
+}
+
+.Frame.is-dragging *,
+.Frame.is-resizing * {
+  cursor: inherit;
 }
 
 .Frame,
@@ -238,7 +248,6 @@ w-frame {
 @keyframes Frame-after_waveExit {
   to { right: 0; top: 0; width: 0; }
 }
-
 
 /* -- nav -- */
 .Nav {
