@@ -2,7 +2,7 @@
 /// frame operations
 const k_Gesture = {
   Drag: "Drag",
-  Scale: "Scale",
+  Resize: "Resize",
 }
 
 /// frame classes
@@ -10,17 +10,17 @@ const k_Class = {
   Frame: "Frame",
   Header: "Frame-header",
   Name: "Frame-name",
+  Close: "Frame-close",
   Body: "Frame-body",
-  State: {
-    IsDragging: "is-dragging",
-    IsScaling: "is-scaling",
-  },
+  Resize: "Frame-resize",
+  IsDragging: "is-dragging",
+  IsScaling: "is-scaling",
 }
 
 /// the minimum size of the frame
 const k_MinSize = {
-  w: 40,
-  h: 40,
+  w: 69,
+  h: 96,
 }
 
 // -- helpers --
@@ -38,6 +38,10 @@ function setClass($el, klass) {
 
 // -- impls --
 export class Frame extends HTMLElement {
+  // -- props --
+  /// the close button
+  $close = null
+
   // -- lifetime --
   /// create a new element
   constructor() {
@@ -51,10 +55,19 @@ export class Frame extends HTMLElement {
 
     // build element
     const $root = setClass(this, k_Class.Frame)
-    const $head = addChild($root, "header", k_Class.Header)
-    const $name = addChild($head, "span", k_Class.Name)
+
+    // build header
+    const $header = addChild($root, "header", k_Class.Header)
+    const $name = addChild($header, "span", k_Class.Name)
+    const $close = addChild($header, "button", k_Class.Close)
+
+    // build body
     const $body = addChild($root, "div", k_Class.Body)
+    const _resize = addChild($body, "button", k_Class.Resize)
     $body.append(...$content)
+
+    // set props
+    m.$close = $close
 
     // set name
     $name.textContent = m.getAttribute("name") || "window"
@@ -67,14 +80,17 @@ export class Frame extends HTMLElement {
   initEvents() {
     const m = this
 
-    // listen to mouse down on this element
+    // bind buttons
+    m.$close.addEventListener("click", m.onClose)
+
+    // bind to mouse down on this element
     m.addEventListener("pointerdown", m.onMouseDown)
 
-    // listen to move/up on the parent to catch mouse events that are fast
+    // bind to move/up on the parent to catch mouse events that are fast
     // enough to exit the frame
-    const container = document.body
-    container.addEventListener("pointermove", m.onMouseMove)
-    container.addEventListener("pointerup", m.onMouseUp)
+    const $body = document.body
+    $body.addEventListener("pointermove", m.onMouseMove)
+    $body.addEventListener("pointerup", m.onMouseUp)
 
     // end drag if mouse exits the window
     // TODO: this doesn't work perfectly inside iframes
@@ -95,10 +111,10 @@ export class Frame extends HTMLElement {
 
     // determine gesture, if any
     const classes = evt.target.classList
-    if (classes.contains('Frame-header')) {
-      gesture = { type: k_Gesture.Move }
-    } else if (classes.contains('Frame-handle')) {
-      gesture = { type: k_Gesture.Scale }
+    if (classes.contains(k_Class.Header)) {
+      gesture = { type: k_Gesture.Drag }
+    } else if (classes.contains(k_Class.Resize)) {
+      gesture = { type: k_Gesture.Resize }
     }
 
     // quit if we don't have a gesture
@@ -108,10 +124,10 @@ export class Frame extends HTMLElement {
 
     // apply gesture style
     switch (gesture.type) {
-      case k_Gesture.Move:
-        m.classList.toggle(k_Class.State.Dragging, true); break
-      case k_Gesture.Scale:
-        m.classList.toggle(k_Class.State.Scaling, true); break
+      case k_Gesture.Drag:
+        m.classList.toggle(k_Class.IsDragging, true); break
+      case k_Gesture.Resize:
+        m.classList.toggle(k_Class.IsScaling, true); break
     }
 
     // record initial position
@@ -135,8 +151,8 @@ export class Frame extends HTMLElement {
 
     // start the operation
     switch (m.gesture.type) {
-      case k_Gesture.Scale:
-        m.onScaleStart(dr)
+      case k_Gesture.Resize:
+        m.onResizeStart(dr)
         break
     }
   }
@@ -155,10 +171,10 @@ export class Frame extends HTMLElement {
     const my = evt.clientY
 
     switch (this.gesture.type) {
-      case k_Gesture.Move:
+      case k_Gesture.Drag:
         this.onDrag(mx, my); break
-      case k_Gesture.Scale:
-        this.onScale(mx, my); break
+      case k_Gesture.Resize:
+        this.onResize(mx, my); break
     }
   }
 
@@ -173,10 +189,10 @@ export class Frame extends HTMLElement {
 
     // reset gesture style
     switch (this.gesture.type) {
-      case k_Gesture.Move:
-        m.classList.toggle(k_Class.State.Dragging, false); break
-      case k_Gesture.Scale:
-        m.classList.toggle(k_Class.State.Scaling, false); break
+      case k_Gesture.Drag:
+        m.classList.toggle(k_Class.IsDragging, false); break
+      case k_Gesture.Resize:
+        m.classList.toggle(k_Class.IsScaling, false); break
     }
 
     // clear gesture
@@ -201,8 +217,9 @@ export class Frame extends HTMLElement {
     m.style.top = `${p0.y + dy}px`
   }
 
-  /// when the player starts scaling
-  onScaleStart(dr) {
+  // -- e/resize
+  /// when the player starts resizing
+  onResizeStart(dr) {
     const m = this
 
     // capture the frame's w/h at the beginning of the gesture
@@ -210,41 +227,15 @@ export class Frame extends HTMLElement {
       w: dr.width,
       h: dr.height
     }
-
-    // get the scale target, we calculate some scaling against the target
-    // element's size
-    const target = m.findScaleTarget()
-    if (target != null) {
-      const tr = target.getBoundingClientRect()
-
-      // capture the target's w/h at the beginning of the op
-      m.gesture.initialTargetSize = {
-        w: tr.width,
-        h: tr.height,
-      }
-
-      // and if this is the first ever time scaling frame, also set the
-      // target's initial w/h as its style. we'll use `transform` to scale
-      // the target in most cases, so it can't use percentage sizing.
-      if (!m.isScaleSetup) {
-        m.baseTargetSize = m.gesture.initialTargetSize
-
-        target.style.transformOrigin = "top left"
-        target.style.width = m.baseTargetSize.w
-        target.style.height = m.baseTargetSize.h
-
-        m.isScaleSetup = true
-      }
-    }
   }
 
   /// when the player scales the frame, every frame it chagnes
-  onScale(mx, my) {
+  onResize(mx, my) {
     const m = this
 
     // get initial state
     const s0 = m.gesture.initialSize
-    const m0 = this.gesture.initialMousePos
+    const m0 = m.gesture.initialMousePos
 
     // get the mouse delta
     const dx = mx - m0.x
@@ -257,6 +248,11 @@ export class Frame extends HTMLElement {
     // update style
     m.style.width = `${w}px`
     m.style.height = `${h}px`
+  }
+
+  /// when the player clicks the close button
+  onClose = (_) => {
+    this.remove()
   }
 }
 

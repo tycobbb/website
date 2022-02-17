@@ -9,10 +9,21 @@ ul[class] {
   list-style: none;
 }
 
+button {
+  appearance: none;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
 /* -- globals -- */
 html {
   font-size: 16px;
   font-family: Baskerville, Hoefler Text, Georgia, serif;
+}
+
+button {
+  cursor: pointer;
 }
 
 * {
@@ -36,6 +47,7 @@ html {
   top: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 /* -- page -- */
@@ -76,6 +88,7 @@ w-frame {
 }
 
 .Frame {
+  box-sizing: border-box;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -83,13 +96,61 @@ w-frame {
   background-color: transparent;
   border: 1px solid black;
   font-family: monospace;
+  pointer-events: all;
+  transition: transform 0.2s;
+}
+
+.Frame::before, .Frame::after {
+  content: "";
+  position: absolute;
+}
+
+.Frame::before {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0px;
+  background: repeating-linear-gradient(black, black 1px, transparent 1px, transparent 2px);
+  transition: left 0.2s, bottom 0.2s, height 0.2s;
+}
+
+.Frame::after {
+  top: 0;
+  right: 0;
+  width: 0px;
+  bottom: 0;
+  background: repeating-linear-gradient(transparent, transparent 1px, black 1px, black 2px);
+  transition: right 0.2s, top 0.2s, width 0.2s;
+}
+
+.Frame.is-dragging, .Frame.is-resizing {
+  cursor: grabbing;
+}
+
+.Frame.is-dragging {
+  transform: translate(-5px, -5px);
+}
+
+.Frame.is-dragging::before {
+  left: 5px;
+  bottom: -5px;
+  height: 5px;
+}
+
+.Frame.is-dragging::after {
+  right: -5px;
+  top: 5px;
+  width: 5px;
 }
 
 .Frame-header {
+  position: relative;
   display: flex;
   justify-content: center;
+  height: 19px;
   margin-bottom: 4px;
-  background: repeating-linear-gradient(transparent, transparent 1px, black 1px, black 2px)
+  background: repeating-linear-gradient(black, black 1px, transparent 1px, transparent 2px);
+  cursor: grab;
 }
 
 .Frame-title {
@@ -98,15 +159,34 @@ w-frame {
   padding-right: 5px;
 }
 
+.Frame-close {
+  position: absolute;
+  left: 0;
+  width: 19px;
+  height: 19px;
+  background: repeating-linear-gradient(90deg, black, black 1px, transparent 1px, transparent 2px);
+}
+
 .Frame-body {
+  overflow: hidden;
   flex: 1;
   position: relative;
   display: flex;
   border: 1px solid black;
 }
 
+.Frame-resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 19px;
+  height: 19px;
+  background: repeating-linear-gradient(90deg, transparent, transparent 1px, black 1px, black 2px);
+  cursor: grab;
+}
+
 /* -- nav -- */
 .Nav {
   flex: 1;
-  background: red;
+  background: linear-gradient(transparent, #fefef9);
 }
