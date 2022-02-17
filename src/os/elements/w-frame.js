@@ -1,15 +1,12 @@
 // -- constants --
-/// the animation duration in ms
-const k_AnimDuration = 150
+/// the minimum size of the frame
+const kMinSize = { w: 69, h: 96 }
 
-/// frame operations
-const k_Gesture = {
-  Drag: "Drag",
-  Resize: "Resize",
-}
+/// the lerp duration in ms
+const kAnimDuration = 100
 
 /// frame classes
-const k_Class = {
+const kClass = {
   Frame: "Frame",
   Header: "Frame-header",
   Name: "Frame-name",
@@ -21,13 +18,24 @@ const k_Class = {
   IsReleasing: "is-releasing",
 }
 
-/// the minimum size of the frame
-const k_MinSize = {
-  w: 69,
-  h: 96,
+/// a map of gesture types
+const kGesture = {
+  Drag: "drag",
+  Resize: "resize",
+}
+
+/// a map of gesture types
+const kEvents = {
+  GestureStart: "frame-gesture-start",
+  GestureEnd: "frame-gesture-end",
+  DragStart: "frame-drag-start",
+  DragEnd: "frame-drag-end",
+  ResizeStart: "frame-resize-start",
+  ResizeEnd: "frame-resize-end",
 }
 
 // -- helpers --
+/// add a child to the element with tag and class; returns child
 function addChild($el, tag, klass) {
   const $child = document.createElement(tag)
   $el.appendChild($child)
@@ -35,6 +43,7 @@ function addChild($el, tag, klass) {
   return $child
 }
 
+/// set the element's class; returns element
 function setClass($el, klass) {
   $el.classList.toggle(klass, true)
   return $el
@@ -42,6 +51,13 @@ function setClass($el, klass) {
 
 // -- impls --
 export class Frame extends HTMLElement {
+  // -- statics --
+  /// a map of gesture types
+  static Gesture = kGesture
+
+  /// a map of event names
+  static Events = kEvents
+
   // -- props --
   /// the current rect
   curr = { x: 0, y: 0, w: 0, h: 0 }
@@ -78,16 +94,16 @@ export class Frame extends HTMLElement {
     const $content = Array.from(m.children)
 
     // build element
-    const $root = setClass(this, k_Class.Frame)
+    const $root = setClass(this, kClass.Frame)
 
     // build header
-    const $header = addChild($root, "header", k_Class.Header)
-    const $name = addChild($header, "span", k_Class.Name)
-    const $close = addChild($header, "button", k_Class.Close)
+    const $header = addChild($root, "header", kClass.Header)
+    const $name = addChild($header, "span", kClass.Name)
+    const $close = addChild($header, "button", kClass.Close)
 
     // build body
-    const $body = addChild($root, "div", k_Class.Body)
-    const _resize = addChild($body, "button", k_Class.Resize)
+    const $body = addChild($root, "div", kClass.Body)
+    const $resize = addChild($body, "button", kClass.Resize)
     $body.append(...$content)
 
     // set name
@@ -210,10 +226,10 @@ export class Frame extends HTMLElement {
 
     // determine gesture, if any
     const classes = evt.target.classList
-    if (classes.contains(k_Class.Header)) {
-      gesture = { type: k_Gesture.Drag }
-    } else if (classes.contains(k_Class.Resize)) {
-      gesture = { type: k_Gesture.Resize }
+    if (classes.contains(kClass.Header)) {
+      gesture = { type: kGesture.Drag }
+    } else if (classes.contains(kClass.Resize)) {
+      gesture = { type: kGesture.Resize }
     }
 
     // quit if we don't have a gesture
@@ -228,12 +244,11 @@ export class Frame extends HTMLElement {
 
     // apply gesture style
     switch (gesture.type) {
-      case k_Gesture.Drag:
-        m.classList.toggle(k_Class.IsDragging, true); break
-      case k_Gesture.Resize:
-        m.classList.toggle(k_Class.IsResizing, true); break
+      case kGesture.Drag:
+        m.classList.toggle(kClass.IsDragging, true); break
+      case kGesture.Resize:
+        m.classList.toggle(kClass.IsResizing, true); break
     }
-
 
     // record initial position
     const dr = m.getBoundingClientRect()
@@ -255,11 +270,12 @@ export class Frame extends HTMLElement {
     m.gesture = gesture
     m.release = null
 
-    // start the operation
+    // start the gesture
     switch (m.gesture.type) {
-      case k_Gesture.Resize:
-        m.onResizeStart(dr)
-        break
+      case kGesture.Drag:
+        m.onDragStart(); break
+      case kGesture.Resize:
+        m.onResizeStart(dr); break
     }
   }
 
@@ -276,15 +292,15 @@ export class Frame extends HTMLElement {
     const mx = evt.clientX
     const my = evt.clientY
 
-    switch (this.gesture.type) {
-      case k_Gesture.Drag:
+    switch (m.gesture.type) {
+      case kGesture.Drag:
         this.onDrag(mx, my); break
-      case k_Gesture.Resize:
+      case kGesture.Resize:
         this.onResize(mx, my); break
     }
 
     // update lerp time
-    m.animTime = m.time + k_AnimDuration
+    m.animTime = m.time + kAnimDuration
   }
 
   /// when the mouse is released
@@ -299,7 +315,15 @@ export class Frame extends HTMLElement {
     // start the release
     m.release = true
     m.addEventListener("animationend", m.onReleaseEnd)
-    m.classList.toggle(k_Class.IsReleasing, true)
+    m.classList.toggle(kClass.IsReleasing, true)
+
+    // end the gesture
+    switch (m.gesture.type) {
+      case kGesture.Drag:
+        this.onDragEnd(); break
+      case kGesture.Resize:
+        this.onResizeEnd(); break
+    }
 
     // clear gesture
     m.gesture = null
@@ -317,12 +341,18 @@ export class Frame extends HTMLElement {
     m.removeEventListener("animationend", m.onReleaseEnd)
 
     // remove all gesture styles
-    m.classList.toggle(k_Class.IsDragging, false)
-    m.classList.toggle(k_Class.IsResizing, false)
-    m.classList.toggle(k_Class.IsReleasing, false)
+    m.classList.toggle(kClass.IsDragging, false)
+    m.classList.toggle(kClass.IsResizing, false)
+    m.classList.toggle(kClass.IsReleasing, false)
   }
 
   // -- e/drag
+  onDragStart() {
+    const m = this
+    m.#dispatch(kEvents.GestureStart, kGesture.Drag)
+    m.#dispatch(kEvents.DragStart, kGesture.Drag)
+  }
+
   /// when the player is dragging, every frame it moves
   onDrag(mx, my) {
     const m = this
@@ -340,6 +370,12 @@ export class Frame extends HTMLElement {
     m.dest.y = p0.y + dy
   }
 
+  onDragEnd() {
+    const m = this
+    m.#dispatch(kEvents.GestureEnd, kGesture.Drag)
+    m.#dispatch(kEvents.DragEnd, kGesture.Drag)
+  }
+
   // -- e/resize
   /// when the player starts resizing
   onResizeStart(dr) {
@@ -350,6 +386,10 @@ export class Frame extends HTMLElement {
       w: dr.width,
       h: dr.height
     }
+
+    // send events
+    m.#dispatch(kEvents.GestureStart, kGesture.Resize)
+    m.#dispatch(kEvents.ResizeStart, kGesture.Resize)
   }
 
   /// when the player scales the frame, every frame it chagnes
@@ -366,13 +406,37 @@ export class Frame extends HTMLElement {
     console.log(`dw ${dw} dh ${dh}`)
 
     // update destination
-    m.dest.w = Math.max(s0.w + dw, k_MinSize.w);
-    m.dest.h = Math.max(s0.h + dh, k_MinSize.h);
+    m.dest.w = Math.max(s0.w + dw, kMinSize.w);
+    m.dest.h = Math.max(s0.h + dh, kMinSize.h);
+  }
+
+  // when the resize event finishes
+  onResizeEnd() {
+    const m = this
+    m.#dispatch(kEvents.GestureEnd, kGesture.Resize)
+    m.#dispatch(kEvents.ResizeEnd, kGesture.Resize)
   }
 
   /// when the player clicks the close button
   onClose = (_) => {
     this.remove()
+  }
+
+  // -- e/external --
+  /// dispatch a gesture event
+  #dispatch(name, type) {
+    this.dispatchEvent(new Frame.GestureEvent(name, type))
+  }
+
+  /// a gesture event
+  static GestureEvent = class GestureEvent extends Event {
+    constructor(name, type = "any") {
+      super(name, {
+        bubbles: true
+      })
+
+      this.detail = { type }
+    }
   }
 }
 

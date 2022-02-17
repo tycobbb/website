@@ -1,27 +1,39 @@
-import "./elements/w-frame.js"
+import { Frame } from "./elements/w-frame.js"
 
 // -- constants --
 /// the id of the page container
-const k_PageId = "page"
+const kPageId = "page"
+
+/// the id of the persistent container
+const kPersistentId = "persistent"
 
 // -- props --
 /// the current location
-let m_Url = null
+let mUrl = null
 
 /// the page container
-let m_Page = null
+let $mPage = null
+
+/// the persistent container
+let $mPeristent = null
 
 // -- lifetime --
 function main() {
   // set props
-  m_Url = document.location
-  m_Page = document.getElementById(k_PageId)
+  mUrl = document.location
+  $mPage = document.getElementById(kPageId)
+  $mPeristent = document.getElementById(kPersistentId)
 
   // bind events
   const d = document
-  const w = window
   d.addEventListener("click", didClick)
+
+  const w = window
   w.addEventListener("popstate", didPopState)
+
+  const p = $mPeristent
+  p.addEventListener(Frame.Events.GestureStart, didStartGesture)
+  p.addEventListener(Frame.Events.GestureEnd, didEndGesture)
 
   // run post visit events first time
   didFinishVisit()
@@ -43,7 +55,7 @@ async function visit(url) {
   didStartVisit()
 
   // update the browser url
-  m_Url = url
+  mUrl = url
 
   // download the page
   const resp = await fetch(url)
@@ -54,20 +66,20 @@ async function visit(url) {
   $el.innerHTML = text
 
   // extract the page
-  const $next = $el.querySelector(`#${k_PageId}`)
+  const $next = $el.querySelector(`#${kPageId}`)
 
   // replace children of page element
-  while (m_Page.firstChild) {
-    m_Page.removeChild(m_Page.lastChild)
+  while ($mPage.firstChild) {
+    $mPage.removeChild($mPage.lastChild)
   }
 
   for (const child of Array.from($next.children)) {
-    m_Page.appendChild(child)
+    $mPage.appendChild(child)
   }
 
   // TODO: do we need this?
   // activate any inert script tags in the new game
-  const scripts = m_Page.querySelectorAll("script")
+  const scripts = $mPage.querySelectorAll("script")
   for (const inert of Array.from(scripts)) {
     // clone the inert script tag
     const script = document.createElement("script")
@@ -91,8 +103,8 @@ function shouldStartVisit(url) {
   // if the paths aren't the same (a hashchange may trigger popstate, but
   // we don't want to re-render)
   return (
-    m_Url.origin === url.origin &&
-    m_Url.pathname !== url.pathname
+    mUrl.origin === url.origin &&
+    mUrl.pathname !== url.pathname
   )
 }
 
@@ -122,7 +134,7 @@ function didClick(evt) {
   }
 
   // if we should visit this url
-  const url = new URL(href, m_Url)
+  const url = new URL(href, mUrl)
   if (!shouldStartVisit(url)) {
     return
   }
@@ -150,6 +162,16 @@ function didStartVisit() {
 
 /// when a visit finishes
 function didFinishVisit() {
+}
+
+/// when a gesture starts
+function didStartGesture() {
+  $mPeristent.style.pointerEvents = "all"
+}
+
+/// when a gesture ends
+function didEndGesture() {
+  $mPeristent.style.pointerEvents = "none"
 }
 
 // -- exports --
