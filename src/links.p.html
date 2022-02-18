@@ -1,0 +1,83 @@
+<% layout("./main.l.html") %>
+
+<w:head>
+  <title>links</title>
+</w:head>
+
+<w:template>
+  <main class="Links Page">
+    <header class="Title">
+      <h1 class="Title-text">links</h1>
+      <h2>a index of misc links</h2>
+    </header>
+
+    <section class="Page-body">
+      <p>
+        i'll try and maintain a list of links that i want to remember here. not
+        sure what the best format for these it rn.
+      </p>
+
+      <section class="LinkGroup">
+        <h1 class="LinkGroup-name">game design</h1>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="https://wombflashforest.blogspot.com">david kanaga</a>`,
+            desc: `amazing. i always lose track of his blog. need a way to also index certain pages b/c he has a lot of good ones.`
+          })
+        %>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="https://wombflashforest.blogspot.com/2015/04/intro-to-ludic-ecologonomy-pt-1.html">david kanaga's ecologonomy</a>`,
+            desc: `this is one of those good ones.`
+          })
+        %>
+      </section>
+
+      <section class="LinkGroup">
+        <h1 class="LinkGroup-name">web0</h1>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="https://html.energy">html.energy</a>`,
+            desc: `great site. nyc-based org. feels like vanguard of "the movement".`
+          })
+        %>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="https://motherfuckingwebsite.com/">motherfuckingwebsite</a>`,
+            desc: `
+              short, satirical manifesto re. tiny, simple websites. <a href="javascript:alert('bec how can i link to u')">bec</a>
+              showed me this
+            `
+          })
+        %>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="http://txti.es/">txti.es</a>`,
+            desc: `tool for making tiny text pages, found on <a href="https://motherfuckingwebsite.com/">motherfuckingwebsite</a>.`
+          })
+        %>
+      </section>
+    </section>
+
+    <p>
+      the syntax for creating these links, both in raw html and using partials, feels pretty cumbersome
+      atm. i'd like to be able to do this in the generator (and escape html in <code>&lt;code&gt;</code> blocks):
+    </p>
+
+    <pre><!--
+   --><code><!--
+-->&lt;w:include name="link"&gt;
+  &lt;a w:slot="link" href="https://url.com"&lt;/a&gt;
+  &lt;p w:slot="desc&gt;cool link.&lt;/p&gt;
+&lt;/w:include><!--
+   --></code><!--
+--></pre>
+
+    <%~ include("footer.f.html") %>
+  </main>
+</w:template>

@@ -26,6 +26,12 @@ button {
   cursor: pointer;
 }
 
+/* https://stackoverflow.com/questions/38781089/font-family-monospace-monospace */
+code {
+  font-size: 0.8rem;
+  font-family: "Fira Code", "Consolas", monospace, monospace;
+}
+
 * {
   font-weight: inherit;
 }
@@ -255,4 +261,10 @@ w-frame {
   padding: 10px;
   font-size: 1.1rem;
   background: linear-gradient(transparent, #fefef9);
+}
+
+/* -- pages -- */
+/* -- p/links --*/
+.LinkGroup {
+  margin-top: 15px;
 }
