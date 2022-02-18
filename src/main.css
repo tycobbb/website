@@ -213,7 +213,7 @@ w-frame {
 .Frame::after {
   animation:
     0.2s ease-out forwards,
-    0.6s ease-in-out 1s infinite alternate both,
+    0.6s ease-in-out 0.5s infinite alternate both,
     0.2s ease-out both
   ;
 }

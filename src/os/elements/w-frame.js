@@ -3,7 +3,7 @@
 const kMinSize = { w: 69, h: 96 }
 
 /// the lerp duration in ms
-const kAnimDuration = 100
+const kAnimDuration = 75
 
 /// frame classes
 const kClass = {
