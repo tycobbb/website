@@ -1,0 +1,54 @@
+<% layout("./main.l.html") %>
+
+<w:head>
+  <title>meta</title>
+</w:head>
+
+<w:template>
+  <main class="Meta Page">
+    <header class="Title">
+      <h1 class="Title-text">meta</h1>
+      <h2>stuff about the site, like todos</h2>
+    </header>
+
+    <section class="Page-body">
+      <p>
+        not sure this is the best place to track todos, but i'll just dump stuff here for now and
+        figure that out later...
+      </p>
+
+      <h2>todos</h2>
+
+      <p>
+        i'm not sure what the right thing to do for css is. when i'm "engineering", i like to use
+        <a href="https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md">suit</a>
+        naming conventions. but this is not that, and it's kinda annoying to drop an h2 and p tags
+        next to one another and not have the spacing "just work". but then when you want to use a
+        class you run into the annoying <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">specificity</a>
+        clashes that suit solves...
+      </p>
+
+      <p>
+        <a href="https://github.com/eta-dev/eta">eta's</a> include syntax falls down on complex
+        partials imo. it feels pretty cumbersome atm. i'd like to be able to do this in the generator
+        (and escape html in <code>&lt;code&gt;</code> blocks):
+      </p>
+
+      <pre><!--
+     --><code><!--
+-->&lt;w:include name="link"&gt;
+  &lt;a w:slot="link" href="https://url.com"&lt;/a&gt;
+  &lt;p w:slot="desc&gt;cool link.&lt;/p&gt;
+&lt;/w:include><!--
+     --></code><!--
+   --></pre>
+
+      <p>
+        the live site is experiencing pretty bad <a href="https://en.wikipedia.org/wiki/Flash_of_unstyled_content">fout</a>
+        all of a sudden. which is weird, because i didn't fundamentally change anything afaik.
+      </p>
+    </section>
+
+    <%~ include("footer.f.html") %>
+  </main>
+</w:template>
