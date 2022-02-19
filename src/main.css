@@ -125,6 +125,13 @@ button {
   }
 }
 
+/* -- footer -- */
+.Footer {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 3px double black;
+}
+
 /* -- frames -- */
 w-frame {
   display: none;
