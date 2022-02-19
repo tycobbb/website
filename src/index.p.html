@@ -28,11 +28,12 @@
       <p>
         the floating window, <code>&lt;a-dumpling&gt;</code>, i lifted and
         personalized from a game i contracted
-        <a href="https://fran.red">on</a>
-        <a href="https://mut.media">with</a>
-        <a href="https://steamedbunnies.itch.io">some</a>
-        <a href="https://hyperlibrary.itch.io">cool</a>
-        <a href="https://gurnburial.itch.io">people</a> called,
+        <a href="a-dumpling">on</a>
+        <a href="a-dumpling">with</a>
+        <a href="a-dumpling">some</a>
+        <a href="a-dumpling">cool</a>
+        <a href="a-dumpling">people</a>
+        called,
         <a href="https://dumpling.love">dumpling.love</a>.
         it's very good, it
         <a href="https://dumpling.love/igf/dumpling-dot-love-lead-in-igf-2022-nominations-independent-games-festival">won</a>
@@ -46,3 +47,34 @@
     <%~ include("/footer.f.html") %>
   </main>
 </w:template>
+
+<script type="module">
+  // -- data --
+  const urls = [
+    "https://fran.red",
+    "https://mut.media",
+    "https://steamedbunnies.itch.io",
+    "https://hyperlibrary.itch.io",
+    "https://gurnburial.itch.io",
+  ]
+
+  // -- main --
+  function main() {
+    // shuffle urls
+    fy(urls)
+
+    // bind to the dumplings :)
+    const dumplings = Array.from(document.querySelectorAll("a[href=a-dumpling]"))
+    for (let i = 0; i < 5; i++) {
+      dumplings[i].href = urls[i]
+    }
+  }
+
+  // -- helpers --
+  function fy(a,b,c,d) {
+    c=a.length;while(c)b=Math.random()*(--c+1)|0,d=a[c],a[c]=a[b],a[b]=d
+  }
+
+  // -- start --
+  main()
+</script>

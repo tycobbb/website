@@ -49,6 +49,7 @@ button {
 }
 
 .Layout-layer {
+  overflow: hidden;
   position: absolute;
   top: 0;
   width: 100%;

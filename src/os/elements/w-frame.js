@@ -153,6 +153,13 @@ export class Frame extends HTMLElement {
     const rd = m.getBoundingClientRect()
     const rr = { x: rd.x, y: rd.y, w: rd.width, h: rd.height }
 
+    // ensure correct xy style
+    // TODO: is a frame w/ fixed right/bottom valid?
+    m.style.left = rr.x + "px"
+    m.style.top = rr.y + "px"
+    m.style.removeProperty("right")
+    m.style.removeProperty("bottom")
+
     // set props
     m.curr = { ...rr }
     m.dest = { ...rr }
