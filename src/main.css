@@ -87,7 +87,11 @@ button {
 }
 
 .Page-body h3 {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
+}
+
+.Page-body h4 {
+  font-size: 1.2rem;
 }
 
 .Page-body h1,
@@ -96,17 +100,23 @@ button {
   margin-bottom: 10px;
 }
 
+.Page-body h4 {
+  margin-bottom: 5px;
+}
+
 .Page-body p + p,
 .Page-body pre + p,
 .Page-body * + h1,
 .Page-body * + h2,
-.Page-body * + h3 {
+.Page-body * + h3,
+.Page-body * + h4 {
   margin-top: 20px;
 }
 
 /* -- title -- */
 .Title-text {
   font-size: 5em;
+  word-break: break-all;
 }
 
 @media screen and (min-width: 640px) {
