@@ -5,7 +5,7 @@
 </w:head>
 
 <w:template>
-  <main class="Meta Page">
+  <main class="Page">
     <header class="Title">
       <h1 class="Title-text">meta</h1>
       <h2>stuff about the site, like todos</h2>
@@ -13,24 +13,45 @@
 
     <section class="Page-body">
       <p>
-        not sure this is the best place to track todos, but i'll just dump stuff here for now and
-        figure that out later...
+        not sure this is the best place to track todos, but i'll just dump stuff
+        here for now and figure that out later...
       </p>
 
       <h2>todos</h2>
 
       <p>
-        the live site is experiencing pretty bad <a href="https://en.wikipedia.org/wiki/Flash_of_unstyled_content">fout</a>
-        all of a sudden. which is weird, because i didn't fundamentally change anything afaik.
+        the live site is experiencing pretty bad <a
+        href="https://en.wikipedia.org/wiki/Flash_of_unstyled_content">fout</a>
+        all of a sudden. which is weird, because i didn't fundamentally change
+        anything afaik. or maybe not?
       </p>
 
       <p>
-        i'm not sure what the right thing to do for css is. when i'm "engineering", i like to use
-        <a href="https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md">suit</a>
-        naming conventions. but this is not that, and it's kinda annoying to drop an h2 and p tags
-        next to one another and not have the spacing "just work". but then when you want to use a
-        class you run into the annoying <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">specificity</a>
+        i'm not sure what the right thing to do for css is. when i'm
+        "engineering", i like to use
+        <a
+        href="https://github.com/suitcss/suit/blob/master/doc/naming-conventions.md">suit</a>
+        naming conventions. but this is not that, and it's kinda annoying to
+        drop an h2 and p tags next to one another and not have the spacing "just
+        work". but then, when you want to use a class you run into the annoying
+        <a
+        href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">specificity</a>
         clashes that suit solves...
+      </p>
+
+      <p>
+        thinking that maybe the best solution is to use component classes for
+        scoping descendent styles and to just be careful. as long as components
+        that might change (aren't generated) are in fragments, it's probably
+        okay.
+      </p>
+
+      <p>
+        the <em>only</em> thing that really bothers me about writing directly
+        into html is trying to figure out how to format <code>&lt;a&gt;</code>
+        tags. they are huge, they mess up all the line breaks. maybe a link
+        index that <a href="https://github.com/tycobbb/www">the build tool</a>
+        can use to preprocess links? i can't anything much shorter...
       </p>
     </section>
 

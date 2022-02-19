@@ -5,7 +5,7 @@
 </w:head>
 
 <w:template>
-  <main class="Links Page">
+  <main class="Page">
     <header class="Title">
       <h1 class="Title-text">links</h1>
       <h2>an index of misc links</h2>
@@ -13,12 +13,13 @@
 
     <section class="Page-body">
       <p>
-        i'll try and maintain a list of links that i want to remember here. not
-        sure what the best format for these is rn.
+        i'll try and maintain a list of links that i want to remember here. this is how i will
+        close browser tabs, so i may not have read all of these. not sure what the ideal format
+        for this page is rn. seems like some links will cross categories.
       </p>
 
       <section class="LinkGroup">
-        <h2>game design</h2>
+        <h2>games</h2>
 
         <%~
           include("link.f.html", {
@@ -31,6 +32,13 @@
           include("link.f.html", {
             link: `<a href="https://wombflashforest.blogspot.com/2015/04/intro-to-ludic-ecologonomy-pt-1.html">david kanaga's ecologonomy</a>`,
             desc: `this is one of those good ones.`
+          })
+        %>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html">putting politics in the marios</a>`,
+            desc: `oft-referenced post by pol clarissou about shoehorning politics into games`
           })
         %>
       </section>
@@ -62,7 +70,23 @@
           })
         %>
       </section>
+
+      <section class="LinkGroup">
+        <h2>politics</h2>
+
+        <%~
+          include("link.f.html", {
+            link: `<a href="https://theanarchistlibrary.org">the anarchist library</a>`,
+            desc: `
+              searchable index of anarchist texts past and present. <a href="javascript:alert('bec how can i link to u')">bec</a>
+              showed me this.
+            `
+          })
+        %>
+      </section>
     </section>
+  </section>
+
 
     <%~ include("/footer.f.html") %>
   </main>

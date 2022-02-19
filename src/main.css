@@ -314,3 +314,7 @@ w-frame {
 .LinkGroup {
   margin-top: 15px;
 }
+
+.LinkGroup-link :last-child {
+  margin-bottom: 5px;
+}
