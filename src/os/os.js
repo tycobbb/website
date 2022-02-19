@@ -110,6 +110,12 @@ class Os {
       m.$page.appendChild(child)
     }
 
+    // update and other elements
+    const $title = $el.querySelector("title")
+    if ($title != null) {
+      document.title = $title.innerText
+    }
+
     // TODO: do we need this?
     // activate any inert script tags on the new page
     const scripts = m.$page.querySelectorAll("script")
