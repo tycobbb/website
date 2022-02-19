@@ -65,7 +65,7 @@ button {
 .Layout-layer.is-loading {
   cursor: wait;
   pointer-events: all;
-  background: #fefef9;
+  background: #fefe;
 }
 
 /* -- page -- */
