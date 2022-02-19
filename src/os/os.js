@@ -4,11 +4,13 @@ import { Frame } from "./elements/w-frame.js"
 /// a map of element ids
 const kId = {
   Page: "page",
-  Persistent: "persistent"
+  Persistent: "persistent",
+  Loader: "persistent"
 }
 
 /// a map of class names
 const kClass = {
+  IsLoading: "is-loading",
   IsInteracting: "is-interacting"
 }
 
@@ -29,6 +31,9 @@ class Os {
   /// the page container
   $page = null
 
+  /// the loader element
+  $loader = null
+
   /// the persistent container
   $peristent = null
 
@@ -40,6 +45,7 @@ class Os {
     // set props
     m.url = document.location
     m.$page = document.getElementById(kId.Page)
+    m.$loader = document.getElementById(kId.Loader)
     m.$peristent = document.getElementById(kId.Persistent)
   }
 
@@ -214,10 +220,12 @@ class Os {
 
   /// when a visit starts
   didStartVisit() {
+    this.$loader.classList.toggle(kClass.IsLoading, true)
   }
 
   /// when a visit finishes
   didFinishVisit() {
+    this.$loader.classList.toggle(kClass.IsLoading, false)
   }
 
   /// when a gesture starts

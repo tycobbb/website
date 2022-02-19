@@ -54,11 +54,18 @@ button {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  transition: 0.2s background;
 }
 
 .Layout-layer.is-interacting {
   cursor: grabbing;
   pointer-events: all;
+}
+
+.Layout-layer.is-loading {
+  cursor: wait;
+  pointer-events: all;
+  background: #fefef9;
 }
 
 /* -- page -- */
