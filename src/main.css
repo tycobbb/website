@@ -36,6 +36,20 @@ button {
   cursor: pointer;
 }
 
+a {
+  color: #c600e1;
+  text-decoration-style: dotted;
+}
+
+a:visited {
+  color: maroon;
+}
+
+a:hover {
+  color: #cf16e8;
+  background-color: #FFEFD57F;
+}
+
 /* -- layout --*/
 .Layout {
   background: #fefef9;
@@ -45,7 +59,8 @@ button {
 }
 
 .Layout-content {
-  display: contents;
+  overflow: scroll;
+  height: 100%;
 }
 
 .Layout-layer {

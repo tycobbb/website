@@ -132,6 +132,9 @@ class Os {
       parent.replaceChild(script, inert)
     }
 
+    // scroll to top
+    window.scrollTo(0, 0)
+
     // run post visit events
     m.didFinishVisit()
   }
