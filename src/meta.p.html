@@ -41,17 +41,23 @@
 
       <p>
         thinking that maybe the best solution is to use component classes for
-        scoping descendent styles and to just be careful. as long as components
+        scoping descendent tags and to just be careful. as long as components
         that might change (aren't generated) are in fragments, it's probably
         okay.
       </p>
 
       <p>
-        the <em>only</em> thing that really bothers me about writing directly
-        into html is trying to figure out how to format <code>&lt;a&gt;</code>
+        the <em>only</em> thing that really bothers me about writing text directly
+        as html (as opposed to markdown &c) is figuring out how to format <code>&lt;a&gt;</code>
         tags. they are huge, they mess up all the line breaks. maybe a link
         index that <a href="https://github.com/tycobbb/www">the build tool</a>
-        can use to preprocess links? i can't anything much shorter...
+        can use to preprocess links? something like <code>&lt;w:a k="html.energy"&gt;html energy&lt;/w:a&gt;</code>
+        seems like it could work (where <code>k</code> is a key into the index).
+      </p>
+
+      <p>
+        also pre-processing <code>&lt;code&gt;</code> blocks to escape any special
+        characters would be nice.
       </p>
     </section>
 
