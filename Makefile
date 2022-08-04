@@ -1,22 +1,22 @@
+include .env
 include ./Makefile.base.mk
 
 # -- cosmetics --
 help-colw = 7
 
 # -- data --
-ds-src = ~/Personal/forest/www/src
-ds-root = $(ds-src)/Main.ts
-db-dst = ./dst
-dr-root = ./src
+ds-www = ~/Personal/forest/www/src/Main.ts
+ds-src = ./src
+ds-dst = ./dst
+dd-site-id = $(NETLIFY_SITE_ID)
 
 # -- tools --
 ts-deno = deno --unstable
 ts-opts = --allow-read --allow-write --allow-run --allow-env --allow-net
+ts-www = $(ts-deno) run $(ts-opts) $(ds-www)
 
 ti-brew = brew
-tb-deno = $(ts-deno)
-tr-deno = $(ts-deno)
-tt-deno = $(ts-deno)
+td-netlify = netlify
 
 ## -- init (i) --
 $(eval $(call alias, init, i/0))
@@ -24,7 +24,13 @@ $(eval $(call alias, i, i/0))
 
 ## init dev env
 i/0: i/pre
+	$(ti-brew) bundle -v --no-upgrade
 .PHONY: i/0
+
+## updates deps
+i/upgr:
+	$(ti-brew) bundle -v
+.PHONY: i/upadte
 
 # -- i/helpers
 i/pre:
@@ -41,13 +47,13 @@ $(eval $(call alias, b, b/0))
 
 ## build the site
 b/0:
-	$(tr-deno) run $(ts-opts) $(ds-root) $(dr-root) --prod
+	$(ts-www) $(ds-src) --prod -d $(ds-dst)
 .PHONY: b/0
 
 ## clean the build
 b/clean:
-	rm -rf $(db-dst)
-.PHONY:
+	rm -rf $(ds-dst)
+.PHONY: b/clean
 
 ## -- run (r) --
 $(eval $(call alias, run, r/0))
@@ -59,5 +65,14 @@ r/0: r/up
 
 ## run the site (server)
 r/up:
-	$(tr-deno) run $(ts-opts) $(ds-root) $(dr-root) --up --verbose
+	$(ts-www) $(ds-src) --up --verbose
 .PHONY: r/up
+
+## -- deploy (d) --
+$(eval $(call alias, deploy, d/0))
+$(eval $(call alias, d, d/0))
+
+## deploy the site
+d/0:
+	$(td-netlify) deploy --prod -d $(ds-dst) -s $(dd-site-id)
+.PHONY: d/0
