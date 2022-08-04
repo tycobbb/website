@@ -1,0 +1,4 @@
+root = true
+
+[Makefile*]
+indent_size = 2

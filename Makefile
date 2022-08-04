@@ -33,7 +33,10 @@ i/upgr:
 .PHONY: i/upadte
 
 # -- i/helpers
-i/pre:
+.env:
+	cp .env.sample .env
+
+i/pre: .env
 ifeq ("$(shell command -v $(ti-brew))", "")
 	$(info ✘ brew is not installed, please see:)
 	$(info - https://brew.sh)
