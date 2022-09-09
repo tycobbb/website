@@ -1,4 +1,4 @@
-<% layout("/main.l.html") %>
+<% layout("main.l.html") %>
 
 <w:head>
   <title>links</title>
@@ -22,128 +22,108 @@
       <section class="LinkGroup">
         <h2>games</h2>
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://wombflashforest.blogspot.com">david kanaga</a>`,
-            desc: `amazing. i always lose track of his blog. need a way to also index certain pages b/c he has a lot of good ones.`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://wombflashforest.blogspot.com">david kanaga</a>`
+          desc=`amazing. i always lose track of his blog. need a way to also index certain pages b/c he has a lot of good ones.`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://wombflashforest.blogspot.com/2015/04/intro-to-ludic-ecologonomy-pt-1.html">ecologonomy</a>`,
-            desc: `by david kanaga. this is one of those good ones.`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://wombflashforest.blogspot.com/2015/04/intro-to-ludic-ecologonomy-pt-1.html">ecologonomy</a>`
+          desc=`by david kanaga. this is one of those good ones.`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html">putting politics in the marios</a>`,
-            desc: `by pol clarissou. oft-referenced post on shoehorning politics into games`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html">putting politics in the marios</a>`
+          desc=`by pol clarissou. oft-referenced post on shoehorning politics into games`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://www.blog.radiator.debacle.us/2017/04/a-survey-of-video-game-manifestos.html">a survey of video game manifestos</a>`,
-            desc: `by robert yang. examines video game manifestos from scratchware to flatgames`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://www.blog.radiator.debacle.us/2017/04/a-survey-of-video-game-manifestos.html">a survey of video game manifestos</a>`
+          desc=`by robert yang. examines video game manifestos from scratchware to flatgames`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://myfriendpokey.tumblr.com/">the catamites</a>`,
-            desc: `another blog i always lose that i should read more.`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://myfriendpokey.tumblr.com/">the catamites</a>`
+          desc=`another blog i always lose that i should read more.`
+        />
       </section>
 
       <section class="LinkGroup">
         <h2>web0</h2>
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://html.energy">html.energy</a>`,
-            desc: `great site. nyc-based org. feels like vanguard of "the movement".`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://html.energy">html.energy</a>`
+          desc=`great site. nyc-based org. feels like vanguard of "the movement".`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://motherfuckingwebsite.com/">motherfuckingwebsite</a>`,
-            desc: `
-              short, satirical manifesto re. tiny, simple websites. <a href="javascript:alert('bec how can i link to u')">bec</a>
-              showed me this
-            `
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://motherfuckingwebsite.com/">motherfuckingwebsite</a>`
+          desc=`short, satirical manifesto re. tiny, simple websites. <a href="javascript:alert('bec how can i link to u')">bec</a>`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="http://txti.es/">txti.es</a>`,
-            desc: `tool for making tiny text pages, found on <a href="https://motherfuckingwebsite.com/">motherfuckingwebsite</a>.`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="http://txti.es/">txti.es</a>`
+          desc=`tool for making tiny text pages, found on <a href="https://motherfuckingwebsite.com/">motherfuckingwebsite</a>.`
+        />
       </section>
 
       <section class="LinkGroup">
         <h2>politics</h2>
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://theanarchistlibrary.org">the anarchist library</a>`,
-            desc: `
-              searchable index of anarchist texts past and present. <a href="javascript:alert('bec how can i link to u')">bec</a>
-              showed me this.
-            `
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://theanarchistlibrary.org">the anarchist library</a>`
+          desc=`searchable index of anarchist texts past and present. <a href="javascript:alert('bec how can i link to u')">bec</a>`
+        />
       </section>
 
       <section class="LinkGroup">
         <h2>software</h2>
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://objology.blogspot.com/2011/09/one-of-best-bits-of-programming-advice.html">don't make objects that end with -er</a>`,
-            desc: `it actually is one of the best bits of programming advice (oop, but broadly).`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://objology.blogspot.com/2011/09/one-of-best-bits-of-programming-advice.html">don't make objects that end with -er</a>`
+          desc=`it actually is one of the best bits of programming advice (oop, but broadly).`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://elegantchaos.com/2014/10/27/premature-pessimization-and-the-like.html">premature pessimization</a>`,
-            desc: `an idea i've felt in my bones for a bit. don't quite understand the use of the word pessimization, though.`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://elegantchaos.com/2014/10/27/premature-pessimization-and-the-like.html">premature pessimization</a>`
+          desc=`an idea i've felt in my bones for a bit. don't quite understand the use of the word pessimization, though.`
+        />
       </section>
 
       <section class="LinkGroup">
         <h2>todo</h2>
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://emreed.net/Three_Modernisms.html">three modernisms</a>`,
-            desc: `by em reed. various definitions of modernism wrt games`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://emreed.net/Three_Modernisms.html">three modernisms</a>`
+          desc=`by em reed. various definitions of modernism wrt games`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://interfacecritique.net/book/olia-lialina-from-my-to-me">from my to me</a>`,
-            desc: `by olia lialina. on the anchor tag.`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://interfacecritique.net/book/olia-lialina-from-my-to-me">from my to me</a>`
+          desc=`by olia lialina. on the anchor tag.`
+        />
 
-        <%~
-          include("link.f.html", {
-            link: `<a href="https://rhizome.org/editorial/2019/mar/27/empathy-is-not-enough-part-1">empathy is not enough</a>`,
-            desc: `linked from <a href="https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html">putting politics in the marios</a>`
-          })
-        %>
+        <w:frag
+          path="./entry"
+          link=`<a href="https://rhizome.org/editorial/2019/mar/27/empathy-is-not-enough-part-1">empathy is not enough</a>`
+          desc=`linked from <a href="https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html">putting politics in the marios</a>`
+        />
       </section>
     </section>
 
-    <%~ include("/footer.f.html") %>
+    <w:frag path="footer" />
   </main>
 </w:template>

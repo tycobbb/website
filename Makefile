@@ -5,7 +5,7 @@ include ./Makefile.base.mk
 help-colw = 7
 
 # -- data --
-ds-www = ~/Personal/forest/www/src/Main.ts
+ds-www = ~/Personal/forest/www/www.ts
 ds-src = ./src
 ds-dst = ./dst
 dd-site-id = $(NETLIFY_SITE_ID)
@@ -50,7 +50,7 @@ $(eval $(call alias, b, b/0))
 
 ## build the site
 b/0:
-	$(ts-www) $(ds-src) --prod -d $(ds-dst)
+	$(ts-www) $(ds-src) --prod -o $(ds-dst)
 .PHONY: b/0
 
 ## clean the build
@@ -68,7 +68,7 @@ r/0: r/up
 
 ## run the site (server)
 r/up:
-	$(ts-www) $(ds-src) --up --verbose
+	$(ts-www) $(ds-src) --up --verbose -o $(ds-dst)
 .PHONY: r/up
 
 ## -- deploy (d) --
