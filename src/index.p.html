@@ -48,33 +48,34 @@
   </main>
 </w:template>
 
+<script id="friends" type="application/json">
+  <%~ JSON.stringify(Object.values(data("friends.d.json")).map((f) => f.link)) %>
+</script>
+
 <script type="module">
   // -- data --
-  const urls = [
-    "https://fran.red",
-    "https://mut.media",
-    "https://steamedbunnies.itch.io",
-    "https://www.thehyperlibrary.com",
-    "https://gurnburial.itch.io",
-  ]
+  const urls =
+    JSON.parse(document.getElementById("friends").innerText)
+
+  const links =
+    Array.from(document.querySelectorAll("a[href=a-dumpling]"))
 
   // -- main --
-  function main() {
+  function Main() {
     // shuffle urls
-    fy(urls)
+    Shuffle(urls)
 
     // bind to the dumplings :)
-    const dumplings = Array.from(document.querySelectorAll("a[href=a-dumpling]"))
     for (let i = 0; i < 5; i++) {
-      dumplings[i].href = urls[i]
+      links[i].href = urls[i]
     }
   }
 
   // -- helpers --
-  function fy(a,b,c,d) {
+  function Shuffle(a,b,c,d) {
     c=a.length;while(c)b=Math.random()*(--c+1)|0,d=a[c],a[c]=a[b],a[b]=d
   }
 
   // -- start --
-  main()
+  Main()
 </script>

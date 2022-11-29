@@ -68,7 +68,7 @@ r/0: r/up
 
 ## run the site (server)
 r/up:
-	$(ts-www) $(ds-src) --up --verbose -o $(ds-dst)
+	$(ts-www) $(ds-src) --up -o $(ds-dst)
 .PHONY: r/up
 
 ## -- deploy (d) --
