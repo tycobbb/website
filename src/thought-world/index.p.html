@@ -15,11 +15,11 @@
   }
 
   function date(d) {
-    return d.toLocaleString("en-US", { day: "numeric", month: "short", year: "numeric" }).toLowerCase()
+    return d.toLocaleString("en-US", { day: "numeric", month: "short", year: "numeric", timeZone: "America/New_York" }).toLowerCase()
   }
 
   function time(d) {
-    return d.toLocaleString("en-US", { hour: "numeric", minute: "numeric", timeZoneName: "shortGeneric" }).toLowerCase()
+    return d.toLocaleString("en-US", { hour: "numeric", minute: "numeric", timeZoneName: "shortGeneric", timeZone: "America/New_York" }).toLowerCase()
   }
 %>
 
