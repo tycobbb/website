@@ -1,0 +1,52 @@
+<% layout("main.l.html") %>
+
+<%
+  function id(d) {
+    const parts = [
+      "thought",
+      d.getFullYear(),
+      d.getMonth() + 1,
+      d.getDate(),
+      d.getHours(),
+      d.getMinutes()
+    ]
+
+    return parts.join("-")
+  }
+
+  function date(d) {
+    return d.toLocaleString("en-US", { day: "numeric", month: "short", year: "numeric" }).toLowerCase()
+  }
+
+  function time(d) {
+    return d.toLocaleString("en-US", { hour: "numeric", minute: "numeric", timeZoneName: "shortGeneric" }).toLowerCase()
+  }
+%>
+
+<w:head>
+  <title>thoughtworld</title>
+</w:head>
+
+<w:template>
+  <main class="Page Thoughtworld">
+    <header class="Title">
+      <h1 class="Title-text">thoughtworld</h1>
+      <img
+        class="Thoughtworld-icon"
+        src="/thoughtworld/thoughtworld.png"
+        alt="the thoughtworld logo w/ clouds"
+      >
+    </header>
+
+    <section class="Page-body Thoughts">
+      <% data("./thoughts.d.tw").forEach((thought) => { %>
+        <article class="Thought" id="<%= id(thought.date) %>">
+          <span class="Thought-body"><%~ thought.body %></span>
+          <br>
+          <%= date(thought.date) %> | <%= time(thought.date) %>
+        </article>
+        <br>
+      <% }) %>
+    </section>
+  </main>
+</w:template>

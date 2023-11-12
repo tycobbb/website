@@ -92,7 +92,7 @@ a:hover {
 @media screen and (min-width: 640px) {
   .Page {
     padding: 80px;
-    max-width: 420px;
+    width: 420px;
   }
 }
 
@@ -326,6 +326,17 @@ w-frame {
 }
 
 /* -- pages -- */
+/* -- p/tw -- */
+.Thoughtworld-icon {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  mix-blend-mode: multiply;
+}
+
+.Thoughts > br:last-of-type {
+  display: none;
+}
+
 /* -- p/links --*/
 .LinkGroup {
   margin-top: 15px;
