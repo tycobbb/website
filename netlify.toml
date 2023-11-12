@@ -1,3 +1,7 @@
 [build]
   publish = "dst"
   command = "make b/ci"
+
+[[redirects]]
+  from = "/thoughtworld"
+  to   = "/thought-world"
