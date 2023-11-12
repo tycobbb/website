@@ -5,7 +5,9 @@ include ./Makefile.base.mk
 help-colw = 7
 
 # -- data --
+ds-tag = 0.0.6
 ds-www = ~/Personal/www/www.ts
+ds-www-ci = https://deno.land/x/wvvw@$(ds-tag)/www.ts
 ds-src = ./src
 ds-dst = ./dst
 dd-site-id = $(NETLIFY_SITE_ID)
@@ -14,6 +16,7 @@ dd-site-id = $(NETLIFY_SITE_ID)
 ts-deno = deno --unstable
 ts-opts = --allow-read --allow-write --allow-run --allow-env --allow-net
 ts-www = $(ts-deno) run $(ts-opts) $(ds-www)
+ts-www-ci = $(ts-deno) run $(ts-opts) $(ds-www-ci)
 
 ti-brew = brew
 td-netlify = netlify
@@ -57,6 +60,11 @@ b/0:
 b/clean:
 	rm -rf $(ds-dst)
 .PHONY: b/clean
+
+## build the site for ci
+b/ci:
+	$(ts-www-ci) $(ds-src) --prod -o $(ds-dst)
+.PHONY: b/ci
 
 ## -- run (r) --
 $(eval $(call alias, run, r/0))
