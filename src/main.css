@@ -329,6 +329,7 @@ w-frame {
 /* -- p/tw -- */
 .Thoughtworld-icon {
   margin-top: 20px;
+  margin-bottom: 5px;
   mix-blend-mode: multiply;
 }
 
