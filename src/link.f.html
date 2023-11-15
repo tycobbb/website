@@ -1,5 +1,17 @@
+<% link = data("links.d.json")[it.name] %>
+
 <w:template>
-  <a href="<%= data("links.d.json")[it.name].url %>">
-    <%~ it.body %>
+  <a
+    href="<%= link.url %>"
+    <% if (it.tab) { %>
+      target="blank"
+      rel="noopener noreferrer"
+    <% } %>
+  >
+    <% if (it.body != null) { %>
+      <%~ it.body %>
+    <% } else { %>
+      <%~ link.lbl %>
+    <% } %>
   </a>
 </w:template>

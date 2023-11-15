@@ -41,15 +41,24 @@
       >
     </header>
 
-    <section class="Page-body Thoughts">
-      <% data("./thoughts.d.tw").forEach((thought) => { %>
-        <article class="Thought" id="<%= id(thought.date) %>">
-          <span class="Thought-body"><%~ thought.body %></span>
-          <br>
-          <%= date(thought.date) %> | <%= time(thought.date) %>
-        </article>
+    <section class="Page-body">
+      <section class="ThoughtWorld-links">
+        <p><em>another world</em></p>
+        <w:frag path="../link" name="tw/hiller" tab="1" />
+        <p>---</p>
         <br>
-      <% }) %>
+      </section>
+
+      <section class="Thoughts">
+        <% data("./thoughts.d.tw").forEach((thought) => { %>
+          <article class="Thought" id="<%= id(thought.date) %>">
+            <span class="Thought-body"><%~ thought.body %></span>
+            <br>
+            <%= date(thought.date) %> | <%= time(thought.date) %>
+          </article>
+          <br>
+        <% }) %>
+      </section>
     </section>
 
     <w:frag path="footer" />

@@ -59,6 +59,16 @@
         also pre-processing <code>&lt;code&gt;</code> blocks to escape any special
         characters would be nice.
       </p>
+
+      <p>
+        the static site generator is stripping whitespace before opening parens in the site
+        body due to a bug in the parser for template helpers.
+      </p>
+
+      <p>
+        the html parser doesn't allow boolean attributes e.g. <code>&lt;w:frag tab /&gt;</code>, so i
+        have to write <code>tab="1"</code> instead.
+      </p>
     </section>
 
     <w:frag path="footer" />
