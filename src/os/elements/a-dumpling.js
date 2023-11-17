@@ -50,7 +50,7 @@ function setClass($el, klass) {
 }
 
 // -- impls --
-export class Frame extends HTMLElement {
+export class Dumpling extends HTMLElement {
   // -- statics --
   /// a map of gesture types
   static Gesture = kGesture
@@ -127,13 +127,13 @@ export class Frame extends HTMLElement {
     m.$close.addEventListener("click", m.onClose)
 
     // bind to mouse down on this element
-    m.addEventListener("pointerdown", m.onMouseDown)
+    m.addEventListener("pointerdown", m.onMouseDown, { passive: false })
 
     // bind to move/up on the parent to catch mouse events that are fast
     // enough to exit the frame
     const $body = document.body
-    $body.addEventListener("pointermove", m.onMouseMove)
-    $body.addEventListener("pointerup", m.onMouseUp)
+    $body.addEventListener("pointermove", m.onMouseMove, { passive: false })
+    $body.addEventListener("pointerup", m.onMouseUp, { passive: false })
 
     // end drag if mouse exits the window
     // TODO: this doesn't work perfectly inside iframes
@@ -445,7 +445,7 @@ export class Frame extends HTMLElement {
   // -- e/external --
   /// dispatch a gesture event
   #dispatch(name, type) {
-    this.dispatchEvent(new Frame.GestureEvent(name, type))
+    this.dispatchEvent(new Dumpling.GestureEvent(name, type))
   }
 
   /// a gesture event that bubbles
@@ -460,4 +460,4 @@ export class Frame extends HTMLElement {
   }
 }
 
-customElements.define("w-frame", Frame)
+customElements.define("a-dumpling", Dumpling)

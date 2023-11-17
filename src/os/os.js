@@ -1,4 +1,4 @@
-import { Frame } from "./elements/w-frame.js"
+import { Dumpling } from "./elements/a-dumpling.js"
 
 // -- constants --
 /// a map of element ids
@@ -62,8 +62,8 @@ class Os {
     w.addEventListener("popstate", m.didPopState)
 
     const p = m.$peristent
-    p.addEventListener(Frame.Events.GestureStart, m.didStartGesture)
-    p.addEventListener(Frame.Events.GestureEnd, m.didEndGesture)
+    p.addEventListener(Dumpling.Events.GestureStart, m.didStartGesture)
+    p.addEventListener(Dumpling.Events.GestureEnd, m.didEndGesture)
 
     // run post visit events first time
     m.didFinishVisit()
