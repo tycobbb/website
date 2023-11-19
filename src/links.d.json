@@ -1,4 +1,13 @@
 {
+  "dmp": {
+    "url": "https://dumpling.love"
+  },
+  "dmp/igf": {
+    "url": "https://dumpling.love/igf/dumpling-dot-love-lead-in-igf-2022-nominations-independent-games-festival"
+  },
+  "dmp/twt": {
+    "url": "https://twitter.com/theparksstaff"
+  },
   "pol/marios": {
     "url": "https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html"
   },

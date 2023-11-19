@@ -1,5 +1,11 @@
 <% link = data("links.d.json")[it.name] %>
 
+<% if (it.body != null) { %>
+  <% body = it.body %>
+<% } else { %>
+  <% body = link.lbl %>
+<% } %>
+
 <w:template>
   <a
     href="<%= link.url %>"
@@ -7,11 +13,5 @@
       target="blank"
       rel="noopener noreferrer"
     <% } %>
-  >
-    <% if (it.body != null) { %>
-      <%~ it.body %>
-    <% } else { %>
-      <%~ link.lbl %>
-    <% } %>
-  </a>
+  ><%~ body %></a>
 </w:template>

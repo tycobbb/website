@@ -5,7 +5,7 @@ include ./Makefile.base.mk
 help-colw = 7
 
 # -- data --
-ds-tag = 0.0.6
+ds-tag = 0.0.7
 ds-www = ~/Personal/www/www.ts
 ds-www-ci = https://deno.land/x/wvvw@$(ds-tag)/www.ts
 ds-src = ./src
