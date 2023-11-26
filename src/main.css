@@ -333,10 +333,6 @@ a-dumpling {
   mix-blend-mode: multiply;
 }
 
-.Thoughts > br:last-of-type {
-  display: none;
-}
-
 /* -- p/links --*/
 .LinkGroup {
   margin-top: 15px;

@@ -46,17 +46,16 @@
         <p><em>another world</em></p>
         <w:frag path="../link" name="tw/hiller" tab="1" />
         <p>---</p>
-        <br>
       </section>
 
       <section class="Thoughts">
         <% data("./thoughts.d.tw").forEach((thought) => { %>
           <article class="Thought" id="<%= id(thought.date) %>">
+            <br>
             <span class="Thought-body"><%~ thought.body %></span>
             <br>
             <%= date(thought.date) %> | <%= time(thought.date) %>
           </article>
-          <br>
         <% }) %>
       </section>
     </section>
