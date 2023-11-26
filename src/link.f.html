@@ -6,12 +6,17 @@
   <% body = link.lbl %>
 <% } %>
 
+<% target = "" %>
+<% rel = "" %>
+<% if (it.tab) { %>
+  <% target = "blank" %>
+  <% rel = "noopener noreferrer" %>
+<% } %>
+
 <w:template>
   <a
     href="<%= link.url %>"
-    <% if (it.tab) { %>
-      target="blank"
-      rel="noopener noreferrer"
-    <% } %>
+    target="<%= target %>"
+    rel="<%= rel %>"
   ><%~ body %></a>
 </w:template>
