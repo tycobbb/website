@@ -8,11 +8,16 @@
   "dmp/twt": {
     "url": "https://twitter.com/theparksstaff"
   },
-  "pol/marios": {
-    "url": "https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html"
-  },
   "tw/hiller": {
     "url": "https://hillergoodspeed.ca/thought-world",
     "lbl": "hiller goodspeed"
+  },
+  "pol": {
+    "url": "https://polclarissou.com",
+    "lbl": "pol clarissou"
+  },
+  "pol/marios": {
+    "url": "https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html",
+    "lbl": "putting politics in the marios"
   }
 }
