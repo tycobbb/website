@@ -1,37 +1,39 @@
 // -- constants --
-/// the minimum size of the frame
-const kMinSize = { w: 69, h: 96 }
-
-/// the lerp duration in ms
-const kAnimDuration = 75
-
-/// frame classes
-const kClass = {
-  Frame: "Frame",
-  Header: "Frame-header",
-  Name: "Frame-name",
-  Close: "Frame-close",
-  Body: "Frame-body",
-  Resize: "Frame-resize",
-  IsDragging: "is-dragging",
-  IsResizing: "is-resizing",
-  IsReleasing: "is-releasing",
-}
-
-/// a map of gesture types
-const kGesture = {
-  Drag: "drag",
-  Resize: "resize",
-}
-
-/// a map of gesture types
-const kEvents = {
-  GestureStart: "frame-gesture-start",
-  GestureEnd: "frame-gesture-end",
-  DragStart: "frame-drag-start",
-  DragEnd: "frame-drag-end",
-  ResizeStart: "frame-resize-start",
-  ResizeEnd: "frame-resize-end",
+const k = {
+  /// the minimum size of the frame
+  MinSize: { w: 69, h: 96 },
+  /// the lerp duration in ms
+  AnimDuration: 75,
+  /// frame classes
+  Class: {
+    Frame: "Frame",
+    Header: "Frame-header",
+    Name: "Frame-name",
+    Close: "Frame-close",
+    Body: "Frame-body",
+    Resize: "Frame-resize",
+    IsDragging: "is-dragging",
+    IsResizing: "is-resizing",
+    IsReleasing: "is-releasing",
+  },
+  /// frame attributes
+  Attr: {
+    NoClose: "no-close"
+  },
+  /// a map of gesture types
+  Gesture: {
+    Drag: "drag",
+    Resize: "resize",
+  },
+  /// a map of event types
+  Events: {
+    GestureStart: "frame-gesture-start",
+    GestureEnd: "frame-gesture-end",
+    DragStart: "frame-drag-start",
+    DragEnd: "frame-drag-end",
+    ResizeStart: "frame-resize-start",
+    ResizeEnd: "frame-resize-end",
+  }
 }
 
 // -- helpers --
@@ -53,10 +55,10 @@ function setClass($el, klass) {
 export class Dumpling extends HTMLElement {
   // -- statics --
   /// a map of gesture types
-  static Gesture = kGesture
+  static Gesture = k.Gesture
 
   /// a map of event names
-  static Events = kEvents
+  static Events = k.Events
 
   // -- props --
   /// the current rect
@@ -83,69 +85,49 @@ export class Dumpling extends HTMLElement {
   $close = null
 
   // -- lifetime --
-  /// create a new element
+  /// when the element is initialized
   constructor() {
     super()
+    this.awake()
+  }
 
-    // grab this
+  /// when the element is connected to the dom
+  connectedCallback() {
+    this.start()
+  }
+
+  // -- lifecyle --
+  /// initialize the element
+  awake() {
     const m = this
 
     // capture content
     const $content = Array.from(m.children)
 
     // build element
-    const $root = setClass(this, kClass.Frame)
+    const $root = setClass(this, k.Class.Frame)
 
     // build header
-    const $header = addChild($root, "header", kClass.Header)
-    const $name = addChild($header, "span", kClass.Name)
-    const $close = addChild($header, "button", kClass.Close)
+    const $header = addChild($root, "header", k.Class.Header)
+    const $name = addChild($header, "span", k.Class.Name)
+    const $close = (!m.hasAttribute(k.Attr.NoClose)) ? addChild($header, "button", k.Class.Close) : null
 
     // build body
-    const $body = addChild($root, "div", kClass.Body)
-    const $resize = addChild($body, "button", kClass.Resize)
+    const $body = addChild($root, "div", k.Class.Body)
+    const $resize = addChild($body, "button", k.Class.Resize)
     $body.append(...$content)
 
     // set name
-    $name.textContent = m.getAttribute("name") || "window"
+    $name.textContent = m.hasAttribute("name") ? m.getAttribute("name") : "window"
 
     // set elements
     m.$close = $close
 
     // bind events
-    m.initEvents()
-
-    // start loop
-    m.start()
+    m.bindEvents()
   }
 
-  /// bind events to the element
-  initEvents() {
-    const m = this
-
-    // bind buttons
-    m.$close.addEventListener("click", m.onClose)
-
-    // bind to mouse down on this element
-    m.addEventListener("pointerdown", m.onMouseDown, { passive: false })
-
-    // bind to move/up on the parent to catch mouse events that are fast
-    // enough to exit the frame
-    const $body = document.body
-    $body.addEventListener("pointermove", m.onMouseMove, { passive: false })
-    $body.addEventListener("pointerup", m.onMouseUp, { passive: false })
-
-    // end drag if mouse exits the window
-    // TODO: this doesn't work perfectly inside iframes
-    const html = document.querySelector("html")
-    html.addEventListener("pointerout", (evt) => {
-      if (evt.target == html) {
-        this.onMouseUp()
-      }
-    })
-  }
-
-  // -- lifecyle --
+  /// start the connected element
   start() {
     const m = this
 
@@ -165,10 +147,14 @@ export class Dumpling extends HTMLElement {
     m.dest = { ...rr }
     m.time = performance.now()
 
+    // focus this element
+    m.bringToTop()
+
     // start loop
     m.loop(m.time)
   }
 
+  /// drive the update loop
   loop = (time) => {
     const m = this
 
@@ -181,6 +167,7 @@ export class Dumpling extends HTMLElement {
     requestAnimationFrame(m.loop)
   }
 
+  /// update the element
   update(delta) {
     const m = this
 
@@ -225,19 +212,70 @@ export class Dumpling extends HTMLElement {
     m.animRemaining -= delta
   }
 
+  /// connect events to dom elements
+  bindEvents() {
+    const m = this
+
+    // bind buttons
+    if (m.$close != null) {
+      m.$close.addEventListener("click", m.onClose)
+    }
+
+    // bind to mouse down on this element
+    m.addEventListener("pointerdown", m.onMouseDown, { passive: false })
+
+    // bind to move/up on the parent to catch mouse events that are fast
+    // enough to exit the frame
+    const $body = document.body
+    $body.addEventListener("pointermove", m.onMouseMove, { passive: false })
+    $body.addEventListener("pointerup", m.onMouseUp, { passive: false })
+
+    // end drag if mouse exits the window
+    // TODO: this doesn't work perfectly inside iframes
+    const html = document.querySelector("html")
+    html.addEventListener("pointerout", (evt) => {
+      if (evt.target == html) {
+        this.onMouseUp()
+      }
+    })
+  }
+
+  // -- commands --
+  /// move this dumpling to the top of its siblings
+  bringToTop() {
+    const m = this
+    const p = m.parentElement
+
+    // get next top index
+    const top = p.dataset.top
+    const topIndex = top == null ? 0 : Number.parseInt(top) + 1
+
+    // if it changed
+    if (m.style.zIndex === (topIndex).toString()) {
+      return
+    }
+
+    // update it
+    m.style.zIndex = topIndex
+    p.dataset.top = topIndex
+  }
+
   // -- events --
   /// when the mouse is pressed
   onMouseDown = (evt) => {
     const m = this
 
-    let gesture = null
+    // focus this dumpling
+    m.bringToTop()
 
     // determine gesture, if any
+    let gesture = null
+
     const classes = evt.target.classList
-    if (classes.contains(kClass.Header)) {
-      gesture = { type: kGesture.Drag }
-    } else if (classes.contains(kClass.Resize)) {
-      gesture = { type: kGesture.Resize }
+    if (classes.contains(k.Class.Header)) {
+      gesture = { type: k.Gesture.Drag }
+    } else if (classes.contains(k.Class.Resize)) {
+      gesture = { type: k.Gesture.Resize }
     }
 
     // quit if we don't have a gesture
@@ -252,10 +290,10 @@ export class Dumpling extends HTMLElement {
 
     // apply gesture style
     switch (gesture.type) {
-      case kGesture.Drag:
-        m.classList.toggle(kClass.IsDragging, true); break
-      case kGesture.Resize:
-        m.classList.toggle(kClass.IsResizing, true); break
+      case k.Gesture.Drag:
+        m.classList.toggle(k.Class.IsDragging, true); break
+      case k.Gesture.Resize:
+        m.classList.toggle(k.Class.IsResizing, true); break
     }
 
     // record initial position
@@ -280,14 +318,14 @@ export class Dumpling extends HTMLElement {
 
     // start the gesture
     switch (m.gesture.type) {
-      case kGesture.Drag:
+      case k.Gesture.Drag:
         m.onDragStart(); break
-      case kGesture.Resize:
+      case k.Gesture.Resize:
         m.onResizeStart(dr); break
     }
   }
 
-  // when the mouse moves
+  /// when the mouse moves
   onMouseMove = (evt) => {
     const m = this
 
@@ -301,14 +339,14 @@ export class Dumpling extends HTMLElement {
     const my = evt.clientY
 
     switch (m.gesture.type) {
-      case kGesture.Drag:
+      case k.Gesture.Drag:
         this.onDrag(mx, my); break
-      case kGesture.Resize:
+      case k.Gesture.Resize:
         this.onResize(mx, my); break
     }
 
     // update remaining lerp time
-    m.animRemaining = kAnimDuration
+    m.animRemaining = k.AnimDuration
   }
 
   /// when the mouse is released
@@ -321,21 +359,21 @@ export class Dumpling extends HTMLElement {
     }
 
     // if not releasing, end animation
-    m.release = m.gesture.type === kGesture.Drag
+    m.release = m.gesture.type === k.Gesture.Drag
     if (!m.release) {
       m.onAnimationEnd()
     }
     // otherwise, start the release
     else {
-      m.classList.toggle(kClass.IsReleasing, true)
+      m.classList.toggle(k.Class.IsReleasing, true)
       m.addEventListener("animationend", m.onReleaseEnd)
     }
 
     // end the gesture
     switch (m.gesture.type) {
-      case kGesture.Drag:
+      case k.Gesture.Drag:
         this.onDragEnd(); break
-      case kGesture.Resize:
+      case k.Gesture.Resize:
         this.onResizeEnd(); break
     }
 
@@ -362,16 +400,16 @@ export class Dumpling extends HTMLElement {
 
     // remove all gesture styles
     const cx = m.classList
-    cx.toggle(kClass.IsDragging, false)
-    cx.toggle(kClass.IsResizing, false)
-    cx.toggle(kClass.IsReleasing, false)
+    cx.toggle(k.Class.IsDragging, false)
+    cx.toggle(k.Class.IsResizing, false)
+    cx.toggle(k.Class.IsReleasing, false)
   }
 
   // -- e/drag
   onDragStart() {
     const m = this
-    m.#dispatch(kEvents.GestureStart, kGesture.Drag)
-    m.#dispatch(kEvents.DragStart, kGesture.Drag)
+    m.#dispatch(k.Events.GestureStart, k.Gesture.Drag)
+    m.#dispatch(k.Events.DragStart, k.Gesture.Drag)
   }
 
   /// when the player is dragging, every frame it moves
@@ -393,8 +431,8 @@ export class Dumpling extends HTMLElement {
 
   onDragEnd() {
     const m = this
-    m.#dispatch(kEvents.GestureEnd, kGesture.Drag)
-    m.#dispatch(kEvents.DragEnd, kGesture.Drag)
+    m.#dispatch(k.Events.GestureEnd, k.Gesture.Drag)
+    m.#dispatch(k.Events.DragEnd, k.Gesture.Drag)
   }
 
   // -- e/resize
@@ -409,8 +447,8 @@ export class Dumpling extends HTMLElement {
     }
 
     // send events
-    m.#dispatch(kEvents.GestureStart, kGesture.Resize)
-    m.#dispatch(kEvents.ResizeStart, kGesture.Resize)
+    m.#dispatch(k.Events.GestureStart, k.Gesture.Resize)
+    m.#dispatch(k.Events.ResizeStart, k.Gesture.Resize)
   }
 
   /// when the player scales the frame, every frame it chagnes
@@ -426,15 +464,15 @@ export class Dumpling extends HTMLElement {
     const dh = my - m0.y
 
     // update destination
-    m.dest.w = Math.max(s0.w + dw, kMinSize.w);
-    m.dest.h = Math.max(s0.h + dh, kMinSize.h);
+    m.dest.w = Math.max(s0.w + dw, k.MinSize.w);
+    m.dest.h = Math.max(s0.h + dh, k.MinSize.h);
   }
 
-  // when the resize event finishes
+  /// when the resize event finishes
   onResizeEnd() {
     const m = this
-    m.#dispatch(kEvents.GestureEnd, kGesture.Resize)
-    m.#dispatch(kEvents.ResizeEnd, kGesture.Resize)
+    m.#dispatch(k.Events.GestureEnd, k.Gesture.Resize)
+    m.#dispatch(k.Events.ResizeEnd, k.Gesture.Resize)
   }
 
   /// when the player clicks the close button

@@ -326,6 +326,11 @@ a-dumpling {
 }
 
 /* -- pages -- */
+/* -- p/home -- */
+.Tone .Frame-body {
+  background: var(--tone);
+}
+
 /* -- p/tw -- */
 .Thoughtworld-icon {
   margin-top: 20px;

@@ -26,8 +26,8 @@
       </p>
 
       <p>
-        the floating window, <code>&lt;a-dumpling&gt;</code>, i lifted and
-        personalized from a game i worked
+        the floating window, <button id="add-dumpling"><code>&lt;a-dumpling&gt;</code></button>,
+        i lifted and personalized from a game i worked
         <a href="a-dumpling">on</a>
         <a href="a-dumpling">with</a>
         <a href="a-dumpling">some</a>
@@ -56,25 +56,60 @@
   const urls =
     JSON.parse(document.getElementById("dmplngs").innerText)
 
-  const links =
-    Array.from(document.querySelectorAll("a[href=a-dumpling]"))
+  // -- props --
+  const $dumplinks = Array.from(document.querySelectorAll("a[href=a-dumpling]"))
+  const $basket = document.getElementById("persistent")
+  const $addButton = document.getElementById("add-dumpling")
 
   // -- main --
-  function Main() {
-    // shuffle urls
-    Shuffle(urls)
-
-    // bind to the dumplings :)
+  function main() {
+    // bind urls to the dumplinks =)
+    shuffle(urls)
     for (let i = 0; i < 5; i++) {
-      links[i].href = urls[i]
+      $dumplinks[i].href = urls[i]
     }
+
+    // bind event to spawn dumplings
+    $addButton.addEventListener("click", onAddDumplingClicked)
+  }
+
+  // -- events --
+  function onAddDumplingClicked() {
+    const rect = $basket.getBoundingClientRect()
+    const w = 94
+    const h = 104
+    const x = randomInt(rect.width - w)
+    const y = randomInt(rect.height - h)
+
+    const $el = document.createElement("div");
+    $el.innerHTML = `
+      <a-dumpling
+        name=""
+        relative-to="page"
+        class="Tone"
+        style="
+          --tone: ${`hsl(${randomInt(360)} 100% 50% / 0.5)`};
+          top: ${y}px;
+          left: ${x}px;
+          width: ${w}px;
+          height: ${h}px;
+        "
+      >
+      </a-dumpling>
+    `
+
+    $basket.appendChild($el.firstElementChild)
   }
 
   // -- helpers --
-  function Shuffle(a,b,c,d) {
+  function shuffle(a,b,c,d) {
     c=a.length;while(c)b=Math.random()*(--c+1)|0,d=a[c],a[c]=a[b],a[b]=d
   }
 
+  function randomInt(max) {
+    return Math.floor(max * Math.random())
+  }
+
   // -- start --
-  Main()
+  main()
 </script>
