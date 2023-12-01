@@ -21,6 +21,14 @@
   function time(d) {
     return d.toLocaleString("en-US", { hour: "numeric", minute: "numeric", timeZoneName: "shortGeneric", timeZone: "America/New_York" }).toLowerCase()
   }
+
+  function likes(thought) {
+    if (thought.like.length === 0) {
+      return ""
+    }
+
+    return ` | ${thought.like.join("") }`
+  }
 %>
 
 <w:head>
@@ -54,7 +62,7 @@
             <br>
             <span class="Thought-body"><%~ thought.body %></span>
             <br>
-            <%= date(thought.date) %> | <%= time(thought.date) %>
+            <%= date(thought.date) %> | <%= time(thought.date) %> <%= likes(thought) %>
           </article>
         <% }) %>
       </section>
