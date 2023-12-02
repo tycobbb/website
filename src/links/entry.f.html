@@ -1,6 +1,14 @@
+<% if (it.name != null) { %>
+  <% link = frag("../link.f.html", { name: it.name }) %>
+<% } else if (it.link != null) { %>
+  <% link = it.link %>
+<% } else { %>
+  <% link = `<a href=${it.url}>${it.lbl}</a>` %>
+<% } %>
+
 <w:template>
   <details class="LinkGroup-link">
-    <summary><%~ it.link %></summary>
-    <p><%~ it.desc %></p>
+    <summary><%~ link %></summary>
+    <p><%~ it.desc ?? it.dsc %></p>
   </details>
 </w:template>

@@ -1,4 +1,8 @@
 {
+  "www": {
+    "lbl": "www",
+    "url": "https://github.com/tycobbb/www"
+  },
   "dmp": {
     "url": "https://dumpling.love"
   },
@@ -12,6 +16,34 @@
     "url": "https://hillergoodspeed.ca/thought-world",
     "lbl": "hiller goodspeed"
   },
+  "d": {
+    "lbl": "d",
+    "url": "https://www.thehyperlibrary.com"
+  },
+  "fran": {
+    "lbl": "fran",
+    "url": "https://franrojo.info"
+  },
+  "joey": {
+    "lbl": "joey schutz",
+    "url": "https://rhizome.org/editorial/2019/mar/27/empathy-is-not-enough-part-1"
+  },
+  "mut": {
+    "lbl": "mut",
+    "url": "https://mut.media"
+  },
+  "dk": {
+    "lbl": "david kanaga",
+    "url": "https://wombflashforest.blogspot.com"
+  },
+  "dk/ecologonomy": {
+    "lbl": "ecologonomy",
+    "url": "https://wombflashforest.blogspot.com/2015/04/intro-to-ludic-ecologonomy-pt-1.html"
+  },
+  "dk/century": {
+    "lbl": "notes on \"manifesto for a ludic century\"",
+    "url": "https://wombflashforest.blogspot.com/2013/09/notes-on-eric-zimmermans-manifesto-for.html"
+  },
   "pol": {
     "url": "https://polclarissou.com",
     "lbl": "pol clarissou"
@@ -19,5 +51,93 @@
   "pol/marios": {
     "url": "https://polclarissou.com/boudoir/posts/2021-02-22-Discourse-about-Discourse-part2-putting-politics-in-the-marios.html",
     "lbl": "putting politics in the marios"
+  },
+  "ry/manifestos": {
+    "lbl": "a survey of video game manifestos",
+    "url": "https://www.blog.radiator.debacle.us/2017/04/a-survey-of-video-game-manifestos.html"
+  },
+  "cm": {
+    "lbl": "the catamites",
+    "url": "https://myfriendpokey.tumblr.com/"
+  },
+  "cm/dump-notes": {
+    "lbl": "note dump, dump notes",
+    "url": "https://myfriendpokey.tumblr.com/post/171904353715/note-dump-dump-notes"
+  },
+  "em/three-modernisms": {
+    "lbl": "three modernisms",
+    "url": "https://emreed.net/Three_Modernisms.html"
+  },
+  "html/energy": {
+    "lbl": "html.energy",
+    "url": "https://html.energy"
+  },
+  "ol/from-my-to-me": {
+    "lbl": "from my to me",
+    "url": "https://interfacecritique.net/book/olia-lialina-from-my-to-me"
+  },
+  "msc/mfw": {
+    "lbl": "motherfuckingwebsite",
+    "url": "https://motherfuckingwebsite.com/"
+  },
+  "msc/txties": {
+    "lbl": "txti.es",
+    "url": "http://txti.es/"
+  },
+  "mw": {
+    "lbl": "matt webb",
+    "url": "https://interconnected.org"
+  },
+  "lu": {
+    "lbl": "todepond",
+    "url": "https://www.todepond.com"
+  },
+  "lt": {
+    "lbl": "low-tech magazine",
+    "url": "https://solar.lowtechmagazine.com"
+  },
+  "lt/low-tech-internet": {
+    "lbl": "how to build a low-tech internet",
+    "url": "https://solar.lowtechmagazine.com/2015/10/how-to-build-a-low-tech-internet"
+  },
+  "vn/permacomputing": {
+    "lbl": "permacomputing update 2021",
+    "url": "http://viznut.fi/texts-en/permacomputing_update_2021.html"
+  },
+  "msc/robust-first": {
+    "lbl": "robust-first computing",
+    "url": "http://robust.cs.unm.edu/doku.php"
+  },
+  "msc/backchannel": {
+    "lbl": "backchannel",
+    "url": "https://www.inkandswitch.com/backchannel/"
+  },
+  "msc/anarchist-library": {
+    "lbl": "the anarchist library",
+    "url": "https://theanarchistlibrary.org"
+  },
+  "msc/fluxus-scores": {
+    "lbl": "fluxus scores",
+    "url": "https://www.thing.net/~grist/ld/fluxusworkbook.pdf"
+  },
+  "msc/dada-manifesto": {
+    "lbl": "dada manifesto",
+    "url": "https://writing.upenn.edu/library/Tzara_Dada-Manifesto_1918.pdf"
+  },
+  "msc/er-objects": {
+    "lbl": "don't make objects that end with -er",
+    "url": "https://objology.blogspot.com/2011/09/one-of-best-bits-of-programming-advice.html"
+  },
+  "bd/parser-combinators": {
+    "lbl": "parser combinators",
+    "url": "https://bodil.lol/parser-combinators/"
+  },
+  "msc/pessimization": {
+    "lbl": "premature pessimization",
+    "url": "https://elegantchaos.com/2014/10/27/premature-pessimization-and-the-like.html"
+  },
+  "rz/empathy": {
+    "lbl": "empathy is not enough",
+    "url": "https://rhizome.org/editorial/2019/mar/27/empathy-is-not-enough-part-1"
   }
 }

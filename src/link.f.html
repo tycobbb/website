@@ -1,4 +1,7 @@
 <% link = data("links.d.json")[it.name] %>
+<% if (link == null) { %>
+  <% throw new Error(`links.d.json has no entry for '${it.name}'`) %>
+<% } %>
 
 <% if (it.body != null) { %>
   <% body = it.body %>
