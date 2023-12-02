@@ -246,16 +246,14 @@ export class Dumpling extends HTMLElement {
     const m = this
     const p = m.parentElement
 
-    // get next top index
+    // if this is not already top
     const top = p.dataset.top
-    const topIndex = top == null ? 0 : Number.parseInt(top) + 1
-
-    // if it changed
-    if (m.style.zIndex === (topIndex).toString()) {
+    if (m.style.zIndex === top) {
       return
     }
 
-    // update it
+    // update it to the new top index
+    const topIndex = top == null ? 0 : Number.parseInt(top) + 1
     m.style.zIndex = topIndex
     p.dataset.top = topIndex
   }
