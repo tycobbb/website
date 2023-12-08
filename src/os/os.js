@@ -1,24 +1,25 @@
 import { Dumpling } from "./elements/a-dumpling.js"
 
 // -- constants --
-/// a map of element ids
-const kId = {
-  Page: "page",
-  Persistent: "persistent",
-  Loader: "persistent"
-}
-
-/// a map of class names
-const kClass = {
-  IsLoading: "is-loading",
-  IsInteracting: "is-interacting"
-}
-
-/// an enum of visit types
-const kVisit = {
-  None: 0,
-  SameOrigin: 1,
-  SamePath: 2
+const k =  {
+  /// a map of element ids
+  Id: {
+    Page: "page",
+    Persistent: "persistent",
+    Loading: "persistent"
+  },
+  /// a map of class names
+  Class: {
+    IsLoading: "is-loading",
+    IsInteracting: "is-interacting"
+  },
+  /// an enum of visit types
+  Visit: {
+    None: 0,
+    SameOrigin: 1,
+    SamePath: 2,
+    SameUrl: 3
+  }
 }
 
 /// the os
@@ -31,8 +32,8 @@ class Os {
   /// the page container
   $page = null
 
-  /// the loader element
-  $loader = null
+  /// the loading indicator
+  $loading = null
 
   /// the persistent container
   $peristent = null
@@ -44,9 +45,9 @@ class Os {
 
     // set props
     m.url = document.location
-    m.$page = document.getElementById(kId.Page)
-    m.$loader = document.getElementById(kId.Loader)
-    m.$peristent = document.getElementById(kId.Persistent)
+    m.$page = document.getElementById(k.Id.Page)
+    m.$loading = document.getElementById(k.Id.Loading)
+    m.$peristent = document.getElementById(k.Id.Persistent)
   }
 
   // -- commands --
@@ -70,18 +71,24 @@ class Os {
   }
 
   /// navigate to the url
-  navigate(url) {
-    const m = this
+  navigate(url, visit) {
+    if (visit === k.Visit.SameUrl) {
+      return
+    }
 
     // add history entry
-    history.pushState({}, "", url)
+    if (visit === k.Visit.SamePath) {
+      history.replaceState({}, "", url)
+    } else {
+      history.pushState({}, "", url)
+    }
 
     // visit page
-    m.visit(url)
+    this.visit(url, visit)
   }
 
   /// visit the url and update the game
-  async visit(url) {
+  async visit(url, type) {
     const m = this
 
     // run pre visit events
@@ -98,8 +105,22 @@ class Os {
     const $el = document.createElement("html")
     $el.innerHTML = text
 
+    // update the document title
+    const $nextTitle = $el.querySelector("title")
+    const $currTitle = document.head.querySelector("title")
+    $currTitle.innerText = $nextTitle.innerText
+
     // extract the page
-    const $next = $el.querySelector(`#${kId.Page}`)
+    const $next = $el.querySelector(`#${k.Id.Page}`)
+
+    // replace the page element's attributes
+    for (const name of m.$page.getAttributeNames()) {
+      m.$page.removeAttribute(name)
+    }
+
+    for (const name of $next.getAttributeNames()) {
+      m.$page.setAttribute(name, $next.getAttribute(name))
+    }
 
     // replace children of page element
     while (m.$page.firstChild) {
@@ -132,8 +153,20 @@ class Os {
       parent.replaceChild(script, inert)
     }
 
-    // scroll to top
-    window.scrollTo(0, 0)
+    // get scroll anchor
+    let $anchor = null
+
+    const anchorId = document.location.hash.slice(1)
+    if (anchorId != null && anchorId !== "") {
+      $anchor = document.getElementById(anchorId)
+    }
+
+    // set scroll position
+    if ($anchor != null) {
+      $anchor.scrollIntoView()
+    } else if (type === k.Visit.SamePath) {
+      m.$page.scrollTo(0, 0)
+    }
 
     // run post visit events
     m.didFinishVisit()
@@ -142,22 +175,20 @@ class Os {
   // -- queries --
   /// get the visit type for a change to this url
   getVisit(url) {
-    const m = this
-
-    // default to no visit, browser nav
-    let type = kVisit.None
-
-    // if the origin matches
-    if (m.url.origin === url.origin) {
-      type = kVisit.SameOrigin
-
-      // if the path matches
-      if (m.url.pathname === url.pathname) {
-        type = kVisit.SamePath
-      }
+    const prev = this.url
+    if (prev.href === url.href) {
+      return k.Visit.SameUrl
     }
 
-    return type
+    if (prev.pathname === url.pathname) {
+      return k.Visit.SamePath
+    }
+
+    if (prev.origin === url.origin) {
+      return k.Visit.SameOrigin
+    }
+
+    return k.Visit.None
   }
 
   // -- events --
@@ -197,7 +228,7 @@ class Os {
     const visit = m.getVisit(url)
 
     // if none, ignore
-    if (visit === kVisit.None) {
+    if (visit === k.Visit.None) {
       return
     }
 
@@ -205,9 +236,7 @@ class Os {
     evt.preventDefault()
 
     // if not same path, run the visit
-    if (visit != kVisit.SamePath) {
-      m.navigate(url)
-    }
+    m.navigate(url, visit)
   }
 
   /// when back is clicked
@@ -219,32 +248,32 @@ class Os {
     const visit = m.getVisit(url)
 
     // if none, do what the browser wants
-    if (visit === kVisit.None) {
+    if (visit === k.Visit.None) {
       return
     }
 
     // otherwise, visit the url
-    m.visit(url)
+    m.visit(url, visit)
   }
 
   /// when a visit starts
   didStartVisit() {
-    this.$loader.classList.toggle(kClass.IsLoading, true)
+    this.$loading.classList.toggle(k.Class.IsLoading, true)
   }
 
   /// when a visit finishes
   didFinishVisit() {
-    this.$loader.classList.toggle(kClass.IsLoading, false)
+    this.$loading.classList.toggle(k.Class.IsLoading, false)
   }
 
   /// when a gesture starts
   didStartGesture = () => {
-    this.$peristent.classList.toggle(kClass.IsInteracting, true)
+    this.$peristent.classList.toggle(k.Class.IsInteracting, true)
   }
 
   /// when a gesture ends
   didEndGesture = () => {
-    this.$peristent.classList.toggle(kClass.IsInteracting, false)
+    this.$peristent.classList.toggle(k.Class.IsInteracting, false)
   }
 }
 

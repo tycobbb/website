@@ -37,16 +37,12 @@ button {
 }
 
 a {
-  color: #c600e1;
+  color: #c800e3;
   text-decoration-style: dotted;
 }
 
-a:visited {
-  color: maroon;
-}
-
 a:hover {
-  color: #cf16e8;
+  color: #c300dd;
   background-color: #FFEFD57F;
 }
 
@@ -332,6 +328,14 @@ a-dumpling {
 }
 
 /* -- p/tw -- */
+.Thought > a {
+  color: unset;
+}
+
+.Thought > a:hover {
+  color: unset;
+}
+
 .Thoughtworld-icon {
   margin-top: 20px;
   margin-bottom: 5px;

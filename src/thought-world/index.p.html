@@ -1,7 +1,9 @@
 <% layout("main.l.html") %>
 
 <%
-  function id(d) {
+  function id(thought) {
+    const d = thought.date
+
     const parts = [
       "thought",
       d.getFullYear(),
@@ -14,12 +16,16 @@
     return parts.join("-")
   }
 
-  function date(d) {
-    return d.toLocaleString("en-US", { day: "numeric", month: "short", year: "numeric", timeZone: "America/New_York" }).toLowerCase()
+  function url(thought) {
+    return `/thought-world#${id(thought)}`
   }
 
-  function time(d) {
-    return d.toLocaleString("en-US", { hour: "numeric", minute: "numeric", timeZoneName: "shortGeneric", timeZone: "America/New_York" }).toLowerCase()
+  function date(thought) {
+    return thought.date.toLocaleString("en-US", { day: "numeric", month: "short", year: "numeric", timeZone: "America/New_York" }).toLowerCase()
+  }
+
+  function time(thought) {
+    return thought.date.toLocaleString("en-US", { hour: "numeric", minute: "numeric", timeZoneName: "shortGeneric", timeZone: "America/New_York" }).toLowerCase()
   }
 
   function likes(thought) {
@@ -57,12 +63,12 @@
       </section>
 
       <section class="Thoughts">
-        <% data("./thoughts.d.tw").forEach((thought) => { %>
-          <article class="Thought" id="<%= id(thought.date) %>">
+        <% data("./thoughts.d.tw").forEach((t) => { %>
+          <article class="Thought" id="<%= id(t) %>">
             <br>
-            <span class="Thought-body"><%~ thought.body %></span>
+            <span class="Thought-body"><%~ t.body %></span>
             <br>
-            <%= date(thought.date) %> | <%= time(thought.date) %> <%= likes(thought) %>
+            <%= date(t) %> | <a href="<%= url(t) %>"><%= time(t) %></a> <%= likes(t) %>
           </article>
         <% }) %>
       </section>
