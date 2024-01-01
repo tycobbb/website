@@ -142,4 +142,5 @@ class Creature {
 }
 
 // -- run --
-new Creature().start()
+// TODO: fix this up a bit more
+// new Creature().start()
