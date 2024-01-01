@@ -1,4 +1,5 @@
 import { Dumpling } from "./elements/a-dumpling.js"
+import "../creature.js"
 
 // -- constants --
 const k =  {
@@ -36,7 +37,7 @@ class Os {
   $loading = null
 
   /// the persistent container
-  $peristent = null
+  $persistent = null
 
   // -- lifetime --
   /// create a new os
@@ -47,7 +48,7 @@ class Os {
     m.url = document.location
     m.$page = document.getElementById(k.Id.Page)
     m.$loading = document.getElementById(k.Id.Loading)
-    m.$peristent = document.getElementById(k.Id.Persistent)
+    m.$persistent = document.getElementById(k.Id.Persistent)
   }
 
   // -- commands --
@@ -57,17 +58,17 @@ class Os {
 
     // bind events
     const d = document
-    d.addEventListener("click", m.didClick)
+    d.addEventListener("click", m.onClicked)
 
     const w = window
-    w.addEventListener("popstate", m.didPopState)
+    w.addEventListener("popstate", m.onBackClicked)
 
-    const p = m.$peristent
-    p.addEventListener(Dumpling.Events.GestureStart, m.didStartGesture)
-    p.addEventListener(Dumpling.Events.GestureEnd, m.didEndGesture)
+    const p = m.$persistent
+    p.addEventListener(Dumpling.Events.GestureStart, m.onGestureStarted)
+    p.addEventListener(Dumpling.Events.GestureEnd, m.onGestureFinished)
 
     // run post visit events first time
-    m.didFinishVisit()
+    m.onVisitFinished()
   }
 
   /// navigate to the url
@@ -92,7 +93,7 @@ class Os {
     const m = this
 
     // run pre visit events
-    m.didStartVisit()
+    m.onVisitStarted()
 
     // update the browser url
     m.url = url
@@ -169,7 +170,7 @@ class Os {
     }
 
     // run post visit events
-    m.didFinishVisit()
+    m.onVisitFinished()
   }
 
   // -- queries --
@@ -193,7 +194,7 @@ class Os {
 
   // -- events --
   /// when anything is clicked on
-  didClick = (evt) => {
+  onClicked = (evt) => {
     const m = this
 
     // see if there is an enclosing link
@@ -240,7 +241,7 @@ class Os {
   }
 
   /// when back is clicked
-  didPopState = () => {
+  onBackClicked = () => {
     const m = this
 
     // get the visit for this url
@@ -257,23 +258,23 @@ class Os {
   }
 
   /// when a visit starts
-  didStartVisit() {
+  onVisitStarted() {
     this.$loading.classList.toggle(k.Class.IsLoading, true)
   }
 
   /// when a visit finishes
-  didFinishVisit() {
+  onVisitFinished() {
     this.$loading.classList.toggle(k.Class.IsLoading, false)
   }
 
   /// when a gesture starts
-  didStartGesture = () => {
-    this.$peristent.classList.toggle(k.Class.IsInteracting, true)
+  onGestureStarted = () => {
+    this.$persistent.classList.toggle(k.Class.IsInteracting, true)
   }
 
-  /// when a gesture ends
-  didEndGesture = () => {
-    this.$peristent.classList.toggle(k.Class.IsInteracting, false)
+  /// when a gesture finishes
+  onGestureFinished = () => {
+    this.$persistent.classList.toggle(k.Class.IsInteracting, false)
   }
 }
 

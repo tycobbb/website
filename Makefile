@@ -15,7 +15,7 @@ dd-site-id = $(NETLIFY_SITE_ID)
 # -- tools --
 ts-deno = deno --unstable
 ts-opts = --allow-read --allow-write --allow-run --allow-env --allow-net
-ts-www = $(ts-deno) run $(ts-opts) $(ds-www)
+ts-www = $(ts-deno) run $(ts-opts) $(ds-www) -x 420
 ts-www-ci = $(ts-deno) run $(ts-opts) $(ds-www-ci)
 
 ti-brew = brew

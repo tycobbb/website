@@ -15,15 +15,31 @@
     <title>website</title>
   </head>
 
-  <body class="Layout">
+  <body id="layout" class="Layout">
     <!-- the page body -->
     <div id="page" class="Layout-content">
       <%~ it.body %>
     </div>
 
     <!-- the layer of persistent elements -->
-    <div id="persistent" class="Layout-layer">
+    <section id="persistent" class="Layout-layer">
       <w:frag path="nav" />
-    </div>
+    </section>
+
+    <!-- a cover when the website is off -->
+    <section class="Layout-cover LayoutCover">
+      <div class="LayoutCover-content">
+        <div class="Page">
+          <header class="Title">
+            <h1 id="creature-message" class="Title-text"></h1>
+          </header>
+
+          <div id="creature-options" class="LayoutCover-options">
+            <button class="LayoutCover-option"></button>
+            <button class="LayoutCover-option"></button>
+          </div>
+        </div>
+      </div>
+    </section>
   </body>
 </html>

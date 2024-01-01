@@ -80,6 +80,60 @@ a:hover {
   background: #fefe;
 }
 
+.Layout-cover {
+  display: none;
+}
+
+.Layout.Layout--off .Layout-cover {
+  display: initial;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.LayoutCover {
+  background-color: #3e3a3a;
+}
+
+.LayoutCover-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: papayawhip;
+  animation: Cover 10s linear infinite;
+}
+
+.LayoutCover-options {
+  display: flex;
+  margin-top: 35px;
+  gap: 12px;
+}
+
+.LayoutCover-option {
+  display: block;
+  padding: 10px 20px;
+  border: 1px dashed burlywood;
+  border-radius: 2px;
+  font-size: 18px;
+  font-family: inherit;
+  color: papayawhip;
+  background: #ffffff20;
+}
+
+@keyframes Cover {
+  from {
+    backdrop-filter: hue-rotate(0deg);
+  }
+
+  to {
+    backdrop-filter: hue-rotate(360deg);
+  }
+}
+
 /* -- page -- */
 .Page {
   padding: 40px;
