@@ -209,6 +209,14 @@ a:hover {
   }
 }
 
+.Title-text a {
+  color: #ff00ff;
+}
+
+.Title-text a:hover {
+  color: #f000f0;
+}
+
 /* -- footer -- */
 .Footer {
   margin-top: 40px;
