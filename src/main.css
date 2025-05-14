@@ -238,6 +238,7 @@ a-dumpling {
   background-color: transparent;
   border: 1px solid black;
   pointer-events: all;
+  touch-action: none;
 }
 
 .Frame-header {
